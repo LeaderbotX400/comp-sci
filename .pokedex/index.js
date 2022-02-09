@@ -1,4 +1,4 @@
-let url = 'http://localhost:5500/pokemon.json';
+let url = 'pokemon.json';
 let dex;
 $.ajax({
   type: 'GET',
