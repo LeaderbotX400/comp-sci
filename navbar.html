@@ -52,7 +52,7 @@
   /* Style the subnav links */
   .subnav-content a {
     float: left;
-    color: white;
+    color: black;
     text-decoration: none;
   }
 
@@ -67,7 +67,11 @@
     display: block;
   }
 </style>
-<link href="https://pro.fontawesome.com/releases/v5.11.1/css/all.css" rel="stylesheet">
+<script defer src="https://pro.fontawesome.com/releases/v5.1.1/js/all.js"
+  integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a" crossorigin="anonymous"></script>
+  
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css"
+  integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 <!-- The navigation menu -->
 <div class="navbar">
   <a href="/"><i class="fas fa-home"></i> Home</a>
@@ -79,6 +83,13 @@
       <a href="/games/dragon">RNG Dragon</a>
       <a href="/games/connect">Connect 4</a>
       <a href="/games/2048">2048</a>
+    </div>
+  </div>
+  <!-- Secrets(not really) -->
+  <div class="subnav hidden">
+    <button class="subnavbtn hidden" style="color: #333"><i class="fas fa-bug"></i> oh you are a sneaky sausage <i class="fa fa-caret-down"></i></button>
+    <div class="subnav-content">
+      <a href="/.hidden/pokedex/">Pokedex</a>
     </div>
   </div>
 </div>
