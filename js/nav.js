@@ -12,8 +12,6 @@ document.head.appendChild(css);
 
 let faJS = document.createElement("script");
 faJS.src = "https://pro.fontawesome.com/releases/v5.11.1/js/all.js";
-faJS.integrity =
-  "sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a";
 faJS.crossOrigin = "anonymous";
 document.head.appendChild(faJS);
 
