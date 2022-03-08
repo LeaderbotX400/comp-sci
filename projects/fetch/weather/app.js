@@ -1,3 +1,5 @@
+// api key : 82005d27a116c2880c8f0fcb866998a0
+
 // SELECT ELEMENTS
 const iconElement = document.querySelector(".weather-icon");
 const tempElement = document.querySelector(".temperature-value p");
@@ -41,6 +43,7 @@ function showError(error) {
 
 // GET WEATHER FROM API PROVIDER
 function getWeather(latitude, longitude) {
+  console.log(`${latitude} ${longitude}`);
   let api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${key}`;
 
   fetch(api)
