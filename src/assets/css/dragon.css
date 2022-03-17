@@ -1,0 +1,66 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: Gotham Rounded;
+}
+
+body {
+  background-image: url("/images/background.jpg");
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  width: 99vw;
+  height: 90vh;
+}
+
+.container {
+  position: relative;
+  width: 800px;
+  max-width: 80%;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 2px;
+}
+
+.btn-grid {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button.start {
+  position: relative;
+  top: 50%;
+  left: 38%;
+}
+
+button {
+  background-color: #3399ff;
+  color: white;
+  border: none;
+  padding: 15px 35px;
+  border-radius: 5px;
+  margin: 10px;
+  font-size: 15px;
+  outline: none;
+}
+
+button.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+button:hover {
+  -moz-box-shadow: inset 0 0 100px 100px skyblue;
+  -webkit-box-shadow: inset 0 0 100px 100px skyblue;
+  box-shadow: inset 0 0 100px 100px skyblue;
+}
