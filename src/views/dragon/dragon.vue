@@ -1,4 +1,5 @@
 <template>
+<div id="container">
   <button @click="game()" v-if="isHidden">{{ start }}</button>
   <div class="container" v-if="!isHidden">
     <div>
@@ -10,10 +11,12 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
-Vue.createApp({
+document.title = 'RNG Dragon'
+export default({
   data() {
     return {
       hideRestart: false,
@@ -27,6 +30,7 @@ Vue.createApp({
   },
   methods: {
     game() {
+      console.log("hello");
       this.hideRestart = true;
       this.isHidden = false;
       this.text =
@@ -56,7 +60,7 @@ Vue.createApp({
       }, 2000);
     },
   },
-}).mount("#app");
+})
 </script>
 
 <style>
@@ -71,7 +75,7 @@ body {
   background-image: url("./dragon.jpg");
 }
 
-#app {
+#container {
   display: flex;
   justify-content: center;
   align-items: center;
