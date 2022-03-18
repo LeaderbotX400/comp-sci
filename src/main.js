@@ -12,7 +12,5 @@ document.head.appendChild(faCSS);
 
 import { createApp } from "vue";
 import App from "./App.vue";
-import navbar from "components/navbar.vue";
 
-createApp(navbar).mount("#navbar");
 createApp(App).mount("#app");

@@ -20,7 +20,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/Home.vue"), // this is the path to the component being imported
   },
   {
-    path: "/dragon", // this is the path that will be used in the url
+    path: "/games/dragon", // this is the path that will be used in the url
     name: "Dragon", // this is the name of the route
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -28,7 +28,7 @@ const routes = [
     component: () =>
       // this is the component that will be loaded
       import(
-        /* webpackChunkName: "about" */ "../views/games/dragon/dragon.vue"
+        /* webpackChunkName: "dragon" */ "/src/views/games/dragon/dragon.vue"
       ), // this is the path to the component being imported
   },
   // {

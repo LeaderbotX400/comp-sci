@@ -9,7 +9,7 @@
       </button>
       <div class="subnav-content">
         <a href="/games/pokemon/index.html">Pokemon simulator</a>
-        <a href="/games/dragon/index.html">RNG Dragon</a>
+        <a href="/games/dragon">RNG Dragon</a>
         <a href="/games/2048/index.html">2048</a>
       </div>
     </div>

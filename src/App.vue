@@ -1,5 +1,11 @@
+<script setup>
+import navbarVue from "./components/navbar.vue";
+
+navbarVue
+</script>
 <template>
-<navbar></navbar>
+  <navbarVue></navbarVue>
+  <h3>hello!</h3>
 </template>
 
 <style>
