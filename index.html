@@ -10,5 +10,10 @@
     <div id="navbar"></div>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+    <script>
+      import { createApp } from "vue";
+      import App from "./src/App.vue";
+      createApp(App).mount("#app");
+    </script>
   </body>
 </html>
