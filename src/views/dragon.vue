@@ -45,6 +45,7 @@ export default {
       }, 5000);
     },
     checkCave(input) {
+      this.hideOptions = true;
       let rng = Math.floor(Math.random() * 2) + 1;
       this.text = `You approach the cave…
         \nIt is dark and spooky…
