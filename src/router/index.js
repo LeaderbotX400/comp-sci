@@ -13,7 +13,7 @@ const routes = [
   {
     path: "/games/dragon",
     name: "Dragon",
-    component: () => import("../views/dragon/dragon.vue"),
+    component: () => import("../views/dragon.vue"),
   },
 ];
 

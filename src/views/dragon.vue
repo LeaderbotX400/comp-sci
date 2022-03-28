@@ -1,22 +1,24 @@
 <template>
-<div id="container">
-  <button @click="game()" v-if="isHidden">{{ start }}</button>
-  <div class="container" v-if="!isHidden">
-    <div>
-      <div id="text">{{ text }}</div>
-      <div id="options" class="btn-grid">
-        <button v-if="!hideOptions" @click="checkCave(1)">{{ btn1 }}</button>
-        <button v-if="!hideOptions" @click="checkCave(2)">{{ btn2 }}</button>
-        <button @click="game()" v-if="!hideRestart">{{ start }}</button>
+  <div id="container">
+    <button @click="game()" v-if="isHidden">{{ start }}</button>
+    <div class="container" v-if="!isHidden">
+      <div>
+        <div id="text">{{ text }}</div>
+        <div id="options" class="btn-grid">
+          <button v-if="!hideOptions" @click="checkCave(1)">{{ btn1 }}</button>
+          <button v-if="!hideOptions" @click="checkCave(2)">{{ btn2 }}</button>
+          <button @click="game()" v-if="!hideRestart">{{ start }}</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-document.title = 'RNG Dragon'
-export default({
+let link = document.querySelector("link[rel~='icon']");
+link.href = "/dragon.ico";
+document.title = "RNG Dragon";
+export default {
   data() {
     return {
       hideRestart: false,
@@ -60,7 +62,7 @@ export default({
       }, 2000);
     },
   },
-})
+};
 </script>
 
 <style>
@@ -72,7 +74,7 @@ export default({
 }
 
 body {
-  background-image: url("./dragon.jpg");
+  background-image: url("/src/assets/images/dragon.jpg");
 }
 
 #container {
@@ -130,5 +132,4 @@ button:hover {
   -webkit-box-shadow: inset 0 0 100px 100px skyblue;
   box-shadow: inset 0 0 100px 100px skyblue;
 }
-
 </style>

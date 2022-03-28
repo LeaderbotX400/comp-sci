@@ -1,15 +1,15 @@
 <template>
   <!-- The navigation menu -->
   <div class="navbar">
-    <router-link to="/"><i class="fas fa-home"></i> Home</router-link>
+    <a href="/"><i class="fas fa-home"></i> Home</a>
     <!-- Games -->
     <div class="subnav">
       <button class="subnavbtn">
         <i class="fas fa-gamepad"></i> Games <i class="fa fa-caret-down"></i>
       </button>
       <div class="subnav-content">
-        <a href="/games/pokemon">Pokemon simulator</a>
-        <a href="/games/2048">2048</a>
+        <a href="/games/pokemon/index.html">Pokemon simulator</a>
+        <a href="/games/2048/index.html">2048</a>
         <router-link to="/games/dragon">RNG Dragon</router-link>
       </div>
     </div>
@@ -19,8 +19,8 @@
         <i class="fas fa-terminal"></i> Api(s) <i class="fa fa-caret-down"></i>
       </button>
       <div class="subnav-content">
-        <a href="/fetch/pokedex">Pokedex</a>
-        <a href="/fetch/weather">Weather</a>
+        <a href="/fetch/pokedex/index.html">Pokedex</a>
+        <a href="/fetch/weather/index.html">Weather</a>
       </div>
     </div>
   </div>
