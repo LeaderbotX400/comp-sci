@@ -15,9 +15,6 @@
 </template>
 
 <script>
-let link = document.querySelector("link[rel~='icon']");
-link.href = "/dragon.ico";
-document.title = "RNG Dragon";
 export default {
   data() {
     return {
@@ -62,6 +59,11 @@ export default {
         this.start = "Play again";
       }, 2000);
     },
+  },
+  mounted() {
+    let link = document.querySelector("link[rel~='icon']");
+    link.href = "/dragon.ico";
+    document.title = "RNG Dragon";
   },
 };
 </script>

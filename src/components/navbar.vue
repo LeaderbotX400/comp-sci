@@ -19,8 +19,8 @@
         <i class="fas fa-terminal"></i> Api(s) <i class="fa fa-caret-down"></i>
       </button>
       <div class="subnav-content">
-        <a href="/fetch/pokedex/index.html">Pokedex</a>
-        <a href="/fetch/weather/index.html">Weather</a>
+        <router-link to="/fetch/pokedex">Pokedex</router-link>
+        <router-link to="/fetch/weather">Weather</router-link>
       </div>
     </div>
   </div>

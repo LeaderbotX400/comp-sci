@@ -15,6 +15,16 @@ const routes = [
     name: "Dragon",
     component: () => import("../views/dragon.vue"),
   },
+  {
+    path: "/fetch/pokedex",
+    name: "Pokedex",
+    component: () => import("../views/pokedex.vue"),
+  },
+  {
+    path: "/fetch/weather",
+    name: "Weather",
+    component: () => import("../views/weather.vue"),
+  },
 ];
 
 const router = createRouter({
