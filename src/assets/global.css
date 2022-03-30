@@ -1,0 +1,43 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body.home {
+  text-align: center;
+  font-family: Arial;
+  background-image: url("/src/assets/images/background.jpg");
+}
+
+body.weather {
+  background-color: #293251;
+}
+
+body.dragon {
+  background-image: url("/src/assets/images/dragon.jpg");
+}
+
+body.pokemon {
+  width: 100%;
+    height: 100%;
+    font-family: "Press Start 2P", cursive;
+    font-size: 10px;
+    /* color:#383838; */
+    color: #484848;
+    background: #383838 !important;
+    background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%);
+    background: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      color-stop(0%, #ffffff),
+      color-stop(100%, #e5e5e5)
+    );
+    background: -webkit-linear-gradient(top, #ffffff 0%, #e5e5e5 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #e5e5e5 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #e5e5e5 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 );
+    margin: 0;
+    box-sizing: border-box;
+  }
