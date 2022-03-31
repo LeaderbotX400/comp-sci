@@ -1,7 +1,14 @@
-<template>
-</template>
+<template></template>
 
-<style>
+<script>
+export default {
+  beforeCreate: function () {
+    document.body.className = "home";
+  },
+};
+</script>
+
+<style scoped>
 body {
   text-align: center;
   font-family: Arial;

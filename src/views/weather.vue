@@ -1,21 +1,21 @@
 <template>
-  <div class="container">
+  <div class="weather">
     <div class="app-title">
       <p>Weather</p>
     </div>
-    <div class="notification"></div>
+    <div class="notification">{{ notificationElement }}</div>
     <div class="weather-container">
       <div class="weather-icon">
-        <img src="/src/assets/weather/icons/unknown.png" alt="" />
+        <img v-bind:src="iconElement" alt="" />
       </div>
       <div class="temperature-value">
-        <p>- °<span>C</span></p>
+        <p @click="changeUnit()">{{ tempElement }}</p>
       </div>
       <div class="temperature-description">
-        <p>-</p>
+        <p>{{ descElement }}</p>
       </div>
       <div class="location">
-        <p>-</p>
+        <p>{{ locationElement }}</p>
       </div>
     </div>
   </div>
@@ -24,17 +24,24 @@
 <script>
 const key = "82005d27a116c2880c8f0fcb866998a0";
 const KELVIN = 273;
-const iconElement = document.querySelector(".weather-icon");
-const tempElement = document.querySelector(".temperature-value p");
-const descElement = document.querySelector(".temperature-description p");
-const locationElement = document.querySelector(".location p");
-const notificationElement = document.querySelector(".notification");
 const weather = {};
 weather.temperature = {
   unit: "celsius",
 };
 
 export default {
+  beforeCreate: function () {
+    document.body.className = "weather";
+  },
+  data() {
+    return {
+      notificationElement: "",
+      iconElement: "/src/assets/weather/icons/unknown.png",
+      tempElement: "- °C",
+      descElement: "-",
+      locationElement: "-",
+    };
+  },
   methods: {
     // SET USER'S POSITION
     setPosition(position) {
@@ -46,8 +53,8 @@ export default {
 
     // SHOW ERROR WHEN THERE IS AN ISSUE WITH GEOLOCATION SERVICE
     showError(error) {
-      notificationElement.style.display = "block";
-      notificationElement.innerHTML = `<p> ${error.message} </p>`;
+      this.notificationElement.style.display = "block";
+      this.notificationElement = `<p> ${error.message} </p>`;
     },
 
     // GET WEATHER FROM API PROVIDER
@@ -56,76 +63,76 @@ export default {
       let api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${key}`;
 
       fetch(api)
-        .then(function (response) {
+        .then((response) => {
           let data = response.json();
           return data;
         })
-        .then(function (data) {
-          console.log(data);
+        .then((data) => {
           weather.temperature.value = Math.floor(data.main.temp - KELVIN);
           weather.description = data.weather[0].description;
           weather.iconId = data.weather[0].icon;
           weather.city = data.name;
           weather.country = data.sys.country;
         })
-        .then(function () {
-          this.displayWeather;
+        .then(() => {
+          this.displayWeather();
         });
     },
 
     // DISPLAY WEATHER TO UI
     displayWeather() {
-      iconElement.innerHTML = `<img src="./assets/weather/icons/${weather.iconId}.png"/>`;
-      tempElement.innerHTML = `${weather.temperature.value}°<span>C</span>`;
-      descElement.innerHTML = weather.description;
-      locationElement.innerHTML = `${weather.city}, ${weather.country}`;
+      console.log(weather);
+      this.iconElement = `/src/assets/weather/icons/${weather.iconId}.png`;
+      this.tempElement = `${weather.temperature.value}°C`;
+      this.descElement = weather.description;
+      this.locationElement = `${weather.city}, ${weather.country}`;
     },
 
     // C to F conversion
     celsiusToFahrenheit(temperature) {
       return (temperature * 9) / 5 + 32;
     },
+
+    // CHANGE UNITS
+    changeUnit() {
+      if (weather.temperature.value === undefined) return;
+
+      if (weather.temperature.unit == "celsius") {
+        let fahrenheit = this.celsiusToFahrenheit(weather.temperature.value);
+        fahrenheit = Math.floor(fahrenheit);
+
+        this.tempElement = `${fahrenheit}°F`;
+        weather.temperature.unit = "fahrenheit";
+      } else {
+        this.tempElement = `${weather.temperature.value}°C`;
+        weather.temperature.unit = "celsius";
+      }
+    },
   },
   mounted() {
+    let link = document.querySelector("link[rel~='icon']");
+    link.href = "/favicons/weather.ico";
+    document.title = "Weather";
+
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         this.setPosition,
         this.showError
       );
     } else {
-      notificationElement.style.display = "block";
-      notificationElement.innerHTML =
-        "<p>Browser doesn't Support Geolocation</p>";
+      this.notificationElement.style.display = "block";
+      this.notificationElement = "<p>Browser doesn't Support Geolocation</p>";
     }
-
-    // tempElement.addEventListener("click", () => {
-    //   if (weather.temperature.value === undefined) return;
-
-    //   if (weather.temperature.unit == "celsius") {
-    //     let fahrenheit = celsiusToFahrenheit(weather.temperature.value);
-    //     fahrenheit = Math.floor(fahrenheit);
-
-    //     tempElement.innerHTML = `${fahrenheit}°<span>F</span>`;
-    //     weather.temperature.unit = "fahrenheit";
-    //   } else {
-    //     tempElement.innerHTML = `${weather.temperature.value}°<span>C</span>`;
-    //     weather.temperature.unit = "celsius";
-    //   }
-    // });
   },
 };
 </script>
 
-<style>
+<style scoped>
 * {
   font-family: "Rimouski";
 }
 
-body {
-  background-color: #293251;
-}
-
-.container {
+.weather {
   width: 300px;
   background-color: #fff;
 

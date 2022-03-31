@@ -1,8 +1,4 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
-  />
   <div id="header-container" class="ui inverted segment">
     <div class="ui inverted secondary menu">
       <h1 id="header-text">Kanto Pokemon</h1>
@@ -22,6 +18,9 @@
 
 <script>
 export default {
+  beforeCreate: function () {
+    document.body.className = "pokedex";
+  },
   methods: {
     renderEverything() {
       let allPokemonContainer = document.querySelector("#poke-container");
@@ -111,7 +110,7 @@ export default {
   mounted() {
     console.log("You have connected...");
     let link = document.querySelector("link[rel~='icon']");
-    link.href = "/pokedex.ico";
+    link.href = "/favicons/pokemon.ico";
     document.title = "Pokedex";
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -124,7 +123,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+@import url("https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css");
 #container {
   margin: auto;
 }

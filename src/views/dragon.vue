@@ -1,5 +1,5 @@
 <template>
-  <div id="container">
+  <div id="dragon">
     <button @click="game()" v-if="isHidden">{{ start }}</button>
     <div class="container" v-if="!isHidden">
       <div>
@@ -16,6 +16,9 @@
 
 <script>
 export default {
+  beforeCreate: function () {
+    document.body.className = "dragon";
+  },
   data() {
     return {
       hideRestart: false,
@@ -62,13 +65,13 @@ export default {
   },
   mounted() {
     let link = document.querySelector("link[rel~='icon']");
-    link.href = "/dragon.ico";
+    link.href = "/favicons/dragon.ico";
     document.title = "RNG Dragon";
   },
 };
 </script>
 
-<style>
+<style scoped>
 *,
 *::before,
 *::after {
@@ -76,11 +79,7 @@ export default {
   font-family: Gotham Rounded;
 }
 
-body {
-  background-image: url("/src/assets/images/dragon.jpg");
-}
-
-#container {
+#dragon {
   display: flex;
   justify-content: center;
   align-items: center;
