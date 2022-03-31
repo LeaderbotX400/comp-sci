@@ -81,7 +81,6 @@ export default {
 
     // DISPLAY WEATHER TO UI
     displayWeather() {
-      console.log(weather);
       this.iconElement = `/src/assets/weather/icons/${weather.iconId}.png`;
       this.tempElement = `${weather.temperature.value}°C`;
       this.descElement = weather.description;
