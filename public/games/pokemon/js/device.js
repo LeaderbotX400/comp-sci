@@ -5,7 +5,7 @@ class Device {
   }
 
   drawDevice() {
-    const app = document.getElementById("container");
+    const app = document.getElementById("app");
     app.innerHTML = this.device;
   }
 }
