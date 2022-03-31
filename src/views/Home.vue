@@ -22,8 +22,12 @@
       <div class="flex-child">
         <h3>API based applications</h3>
         <div id="btn-grid">
-          <button>Pokedex</button>
-          <button>Weather</button>
+          <router-link to="/fetch/pokedex">
+            <button>Pokedex</button>
+          </router-link>
+          <router-link to="/fetch/weather">
+            <button>Weather</button>
+          </router-link>
         </div>
       </div>
     </div>
@@ -39,8 +43,11 @@ export default {
 </script>
 
 <style scoped>
-.flex-container {
-  display: flex;
+@media (min-width: 768px) {
+  .flex-container {
+    display: flex;
+    max-width: 720px;
+  }
 }
 .flex-child {
   flex: 1;

@@ -8,7 +8,7 @@
         <i class="fas fa-gamepad"></i> Games <i class="fa fa-caret-down"></i>
       </button>
       <div class="subnav-content">
-        <router-link to="/games/pokemon/">Pokemon simulator</router-link>
+        <a href="/games/pokemon/index.html">Pokemon simulator</a>
         <router-link to="/games/dragon">RNG Dragon</router-link>
       </div>
     </div>
