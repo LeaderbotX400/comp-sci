@@ -1,4 +1,5 @@
 <template>
+  <!-- <link rel="stylesheet" href="/assets/weather/font/Rimouski.css" /> -->
   <div class="weather">
     <div class="app-title">
       <p>Weather</p>
@@ -36,7 +37,7 @@ export default {
   data() {
     return {
       notificationElement: "",
-      iconElement: "/src/assets/weather/icons/unknown.png",
+      iconElement: "/assets/weather/icons/unknown.png",
       tempElement: "- °C",
       descElement: "-",
       locationElement: "-",
@@ -81,7 +82,7 @@ export default {
 
     // DISPLAY WEATHER TO UI
     displayWeather() {
-      this.iconElement = `/src/assets/weather/icons/${weather.iconId}.png`;
+      this.iconElement = `/assets/weather/icons/${weather.iconId}.png`;
       this.tempElement = `${weather.temperature.value}°C`;
       this.descElement = weather.description;
       this.locationElement = `${weather.city}, ${weather.country}`;
@@ -109,6 +110,11 @@ export default {
     },
   },
   mounted() {
+    let css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = "/assets/weather/font/Rimouski.css";
+    document.head.appendChild(css);
+
     let link = document.querySelector("link[rel~='icon']");
     link.href = "/favicons/weather.ico";
     document.title = "Weather";
@@ -127,7 +133,7 @@ export default {
 </script>
 
 <style scoped>
-@import url("/src/assets/weather/font/Rimouski.css");
+/* @import url("/assets/weather/font/Rimouski.css"); */
 * {
   font-family: "Rimouski";
 }
