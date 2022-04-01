@@ -133,7 +133,6 @@ export default {
 </script>
 
 <style scoped>
-/* @import url("/assets/weather/font/Rimouski.css"); */
 * {
   font-family: "Rimouski";
 }
