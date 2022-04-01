@@ -1,7 +1,7 @@
 <template>
   <!-- The navigation menu -->
   <div class="navbar">
-    <a href="/"><i class="fas fa-home"></i> Home</a>
+    <router-link to="/"><i class="fas fa-home"></i> Home</router-link>
     <!-- Games -->
     <div class="subnav">
       <button class="subnavbtn">

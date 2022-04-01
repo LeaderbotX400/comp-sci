@@ -39,6 +39,11 @@ export default {
   beforeCreate: function () {
     document.body.className = "home";
   },
+  mounted() {
+    let link = document.querySelector("link[rel~='icon']");
+    link.href = "/favicons/favicon.ico";
+    document.title = "Computer Science";
+  },
 };
 </script>
 
