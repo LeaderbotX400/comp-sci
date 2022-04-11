@@ -5,14 +5,22 @@
     </div>
   </div>
   <div id="container">
-    <div id="poke-container" class="ui cards">
-      <button id="generate-pokemon" class="ui secondary button">
+    <div class="ui cards" v-if="!isHidden">
+      <button
+        id="generate-pokemon"
+        class="ui secondary button"
+        v-on:click="renderEverything"
+      >
         Generate Pokemon
       </button>
     </div>
+
+    <div id="poke-container" class="ui cards"></div>
   </div>
-  <div id="delete-container">
-    <button id="delete-btn" class="ui red button">Delete</button>
+  <div id="delete-container" v-if="isHidden">
+    <button id="delete-btn" class="ui red button" v-on:click="deleteEverything">
+      Delete
+    </button>
   </div>
 </template>
 
@@ -21,17 +29,17 @@ export default {
   beforeCreate: function () {
     document.body.className = "pokedex";
   },
+  data() {
+    return {
+      isHidden: false,
+    };
+  },
   methods: {
     renderEverything() {
+      this.isHidden = !this.isHidden;
       let allPokemonContainer = document.querySelector("#poke-container");
       allPokemonContainer.innerText = "";
       this.fetchKantoPokemon();
-
-      this.getDeleteBtn().style.display = "block";
-    },
-
-    getDeleteBtn() {
-      return document.querySelector("#delete-btn");
     },
 
     fetchKantoPokemon() {
@@ -93,18 +101,10 @@ export default {
       containerDiv.append(pokeImgContainer);
     },
 
-    deleteEverything(e) {
-      e.target.style = "none";
+    deleteEverything() {
+      this.isHidden = !this.isHidden;
       let allPokemonContainer = document.querySelector("#poke-container");
       allPokemonContainer.innerText = "";
-
-      let generateBtn = document.createElement("button");
-      generateBtn.innerText = "Generate Pokemon";
-      generateBtn.id = "generate-pokemon";
-      generateBtn.classList.add("ui", "secondary", "button");
-      generateBtn.addEventListener("click", this.renderEverything);
-
-      allPokemonContainer.append(generateBtn);
     },
   },
   mounted() {
@@ -112,13 +112,6 @@ export default {
     let link = document.querySelector("link[rel~='icon']");
     link.href = "/favicons/pokemon.ico";
     document.title = "Pokedex";
-
-    document.addEventListener("DOMContentLoaded", () => {
-      let generateBtn = document.querySelector("#generate-pokemon");
-      generateBtn.addEventListener("click", this.renderEverything);
-
-      this.getDeleteBtn().addEventListener("click", this.deleteEverything);
-    });
   },
 };
 </script>
@@ -150,7 +143,11 @@ export default {
 #delete-btn {
   position: absolute;
   left: 85%;
-  display: none;
   margin-bottom: 5%;
+}
+#generate-container {
+  margin: auto;
+  width: 90%;
+  padding: 10px;
 }
 </style>
