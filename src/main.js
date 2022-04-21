@@ -14,8 +14,7 @@ document.head.appendChild(faCSS);
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
+import store from "./store";
 import navbar from "./components/navbar.vue";
 
-const app = createApp(App).use(router);
-app.component("Navbar", navbar);
-app.mount("#app");
+createApp(App).use(router).use(store).component("Navbar", navbar).mount("#app");

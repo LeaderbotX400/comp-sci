@@ -1,3 +1,7 @@
 <template></template>
 
-<script></script>
+<script>
+import { auth } from "../firebase";
+
+console.log(auth.currentUser);
+</script>

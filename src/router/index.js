@@ -1,6 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { auth } from "../firebase";
 
 const routes = [
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("../components/login.vue"),
+  },
   {
     path: "/Home",
     redirect: "/",
@@ -29,22 +35,32 @@ const routes = [
     path: "/misc/todo",
     name: "ToDo",
     component: () => import("../views/todo.vue"),
-  },
-  {
-    path: "/register",
-    name: "Rgister",
-    component: () => import("../components/Register.vue"),
-  },
-  {
-    path: "/login",
-    name: "Login",
-    component: () => import("../components/login.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.path === "/login" && auth.currentUser) {
+    next("/misc/todo");
+    return;
+  }
+
+  if (
+    to.matched.some((record) => record.meta.requiresAuth) &&
+    !auth.currentUser
+  ) {
+    next("/login");
+    return;
+  }
+
+  next();
 });
 
 export default router;
