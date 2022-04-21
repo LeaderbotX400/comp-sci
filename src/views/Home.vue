@@ -68,6 +68,7 @@ export default {
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
+  box-shadow: 2px 2px 5px 2px rgb(175, 176, 202);
   transform: translate(-50%, -50%);
   background-color: white;
   border-radius: 10px;
