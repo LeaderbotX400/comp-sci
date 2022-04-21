@@ -22,6 +22,15 @@
         <router-link to="/fetch/weather">Weather</router-link>
       </div>
     </div>
+    <!-- Misc -->
+    <div class="subnav">
+      <button class="subnavbtn">
+        <i class="fas fa-terminal"></i> Misc <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="subnav-content">
+        <router-link to="/misc/todo">To-Do</router-link>
+      </div>
+    </div>
   </div>
 </template>
 

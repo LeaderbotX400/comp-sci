@@ -10,6 +10,7 @@ faCSS.href = "https://pro.fontawesome.com/releases/v5.11.1/css/all.css";
 faCSS.crossOrigin = "anonymous";
 document.head.appendChild(faCSS);
 
+//Vue stuff
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";

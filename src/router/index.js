@@ -25,6 +25,21 @@ const routes = [
     name: "Weather",
     component: () => import("../views/weather.vue"),
   },
+  {
+    path: "/misc/todo",
+    name: "ToDo",
+    component: () => import("../views/todo.vue"),
+  },
+  {
+    path: "/register",
+    name: "Rgister",
+    component: () => import("../components/Register.vue"),
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("../components/login.vue"),
+  },
 ];
 
 const router = createRouter({
