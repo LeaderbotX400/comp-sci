@@ -6,5 +6,5 @@ export default {
 </script>
 <template>
   <Navbar />
-  <router-view> </router-view>
+  <router-view />
 </template>

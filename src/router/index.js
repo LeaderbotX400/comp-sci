@@ -35,9 +35,6 @@ const routes = [
     path: "/misc/todo",
     name: "ToDo",
     component: () => import("../views/todo.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
 ];
 
@@ -47,20 +44,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path === "/login" && auth.currentUser) {
-    next("/misc/todo");
-    return;
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!auth.loggedIn()) {
+      next({
+        path: "/login",
+        query: { redirect: to.fullPath },
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
   }
-
-  if (
-    to.matched.some((record) => record.meta.requiresAuth) &&
-    !auth.currentUser
-  ) {
-    next("/login");
-    return;
-  }
-
-  next();
 });
 
 export default router;

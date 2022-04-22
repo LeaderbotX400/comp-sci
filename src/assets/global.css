@@ -16,3 +16,7 @@ body.weather {
 body.dragon {
   background-image: url("/src/assets/images/dragon.jpg");
 }
+
+body.todo {
+  background-color: #293251;
+}
