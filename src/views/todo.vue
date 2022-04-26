@@ -1,5 +1,7 @@
 <template>
-  <div id="container"></div>
+  <div id="container">
+    <button @click="addToDo">Click Me!</button>
+  </div>
 </template>
 
 <script>
@@ -7,29 +9,54 @@ import { auth, db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
 export default {
+  // data() {
+  //   return {
+  //     uid: auth.currentUser?.uid,
+  //   };
+  // },
   beforeCreate: function () {
     document.body.className = "todo";
   },
-  addToDo() {
-    await setDoc(doc(db, "users", auth.currentUser.uid, "todo"), {
-      name: "Los Angeles",
-      state: "CA",
-      country: "USA"
+  computed: {
+    user: function () {
+      //console.log(auth.currentUser?.uid);
+      return auth.currentUser?.uid;
+    },
+  },
+  watch: {
+    user: function (newUser) {
+      if (newUser) {
+        this.init();
+      }
+    },
+  },
+  methods: {
+    //remove watch and compute
+    async init(user) {
+      console.log("ran init function");
+      const docRef = doc(db, `users/${user}`);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data().todo);
+      } else {
+        console.log("No such document!");
+      }
+    },
+    async addToDo() {
+      await updateDoc(docRef, {
+        todo: arrayUnion("test"),
+      });
+    },
+    async removeToDo() {},
+  },
+  mounted() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.init(user.uid);
+      } else {
+        this.todos = [];
+      }
     });
-  },
-  removeToDo() {
-
-  },
-  async mounted() {
-    const docRef = doc(db, "users", auth.currentUser.uid);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-    } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!");
-    }
   },
 };
 </script>
