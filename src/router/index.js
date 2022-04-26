@@ -3,11 +3,6 @@ import { auth } from "../firebase";
 
 const routes = [
   {
-    path: "/login",
-    name: "Login",
-    component: () => import("../components/login.vue"),
-  },
-  {
     path: "/Home",
     redirect: "/",
   },

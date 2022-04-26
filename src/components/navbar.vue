@@ -35,31 +35,64 @@
       </div>
     </div>
     <div class="auth">
-      <router-link to="/login" v-if="!loggedIn">
-        <button class="login btn">Login</button>
-      </router-link>
-      <router-link to="/logout" v-if="loggedIn">
-        <button class="logout btn">Logout</button>
-      </router-link>
+      <button class="login btn" @click="showAuthMenu" v-if="!loggedIn">
+        Login
+      </button>
+      <button class="logout btn" @click="logout" v-if="loggedIn">Logout</button>
     </div>
   </div>
 </template>
 
 <script>
 import { auth } from "../firebase";
+import { onAuthStateChanged, EmailAuthProvider } from "@firebase/auth";
+import "firebaseui";
 
 export default {
   data() {
     return {
+      showAuth: false,
       loggedIn: false,
     };
   },
+  methods: {
+    showAuthMenu() {
+      let ui = firebaseui.auth.AuthUI.getInstance();
+      if (!ui) {
+        ui = new firebaseui.auth.AuthUI(auth);
+      }
+      const uiConfig = {
+        callbacks: {
+          signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+            // Handle the result
+            return false;
+          },
+        },
+        signInFlow: "popup",
+        signInOptions: [
+          {
+            provider: EmailAuthProvider.PROVIDER_ID,
+          },
+        ],
+      };
+      ui.start("#firebaseui-auth-container", uiConfig);
+    },
+    logout() {
+      auth.signOut();
+    },
+  },
+
   mounted() {
-    if (auth.currentUser) {
-      this.loggedIn = true;
-    } else {
-      this.loggedIn = false;
-    }
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.loggedIn = true;
+        const uid = user.uid;
+        console.log(user.email + " is logged in!");
+      } else {
+        this.loggedIn = false;
+        console.log("User is logged out!");
+      }
+    });
   },
 };
 </script>

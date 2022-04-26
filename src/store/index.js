@@ -1,4 +1,5 @@
-import { createStore } from "vuex";
+// import { createStore } from "vuex";
+import { defineStore } from "pinia";
 import router from "../router";
 import { auth } from "../firebase";
 import {
@@ -7,7 +8,7 @@ import {
   signOut,
 } from "firebase/auth";
 
-export default createStore({
+export default defineStore({
   state: {
     user: null,
   },

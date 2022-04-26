@@ -6,5 +6,6 @@ export default {
 </script>
 <template>
   <Navbar />
+  <div id="firebaseui-auth-container"></div>
   <router-view />
 </template>
