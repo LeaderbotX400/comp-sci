@@ -1,7 +1,12 @@
 <template>
   <div id="container">
     <div class="flex-container input">
-      <input v-model="newItem" placeholder="Edit me" />
+      <input
+        :class="{ error: hasError }"
+        v-model="newItem"
+        placeholder="Edit me"
+      />
+
       <button class="btn" id="add-btn" @click="addItem(newItem)">
         Add Task <i class="fa fa-plus icon" aria-hidden="true"></i>
       </button>
@@ -14,7 +19,7 @@
           @click="completeItem(item)"
           :checked="item.completed"
         />
-        <p :id="item.completed ? 'completed' : ''">
+        <p :class="{ completed: item.completed }">
           {{ item.text }}
         </p>
         <button class="delete btn" @click="deleteItem(item)">
@@ -42,7 +47,9 @@ export default {
   data() {
     return {
       newItem: "",
-      ToDos: {},
+      ToDos: [],
+      completed: false,
+      hasError: false,
     };
   },
   beforeCreate: function () {
@@ -56,7 +63,6 @@ export default {
       if (docSnap.exists()) {
         if (docSnap.data().todo) {
           this.ToDos = docSnap.data().todo;
-          // console.log("Document data:", docSnap.data().todo);
         } else {
           await setDoc(docRef, {
             todo: [],
@@ -67,6 +73,7 @@ export default {
           todo: [],
         });
       }
+      console.log(this.ToDos);
     },
     async addItem(item) {
       const docRef = doc(db, `users/${auth.currentUser?.uid}`);
@@ -78,15 +85,22 @@ export default {
         await updateDoc(docRef, {
           todo: arrayUnion(input),
         });
-        this.ToDos.push = input;
+        this.ToDos.push(input);
+      } else {
+        this.hasError = true;
       }
     },
     async deleteItem(item) {
       const docRef = doc(db, `users/${auth.currentUser?.uid}`);
 
       await updateDoc(docRef, {
-        todo: arrayRemove(item.text),
+        todo: arrayRemove(item),
       });
+
+      let index = this.ToDos.indexOf(item);
+      if (this.ToDos.indexOf(item) !== -1) {
+        this.ToDos.splice(index, 1);
+      }
     },
     async completeItem(item) {
       const docRef = doc(db, `users/${auth.currentUser?.uid}`);
@@ -104,6 +118,7 @@ export default {
       await updateDoc(docRef, {
         todo: [],
       });
+      this.ToDos = [];
     },
   },
   mounted() {
@@ -114,9 +129,12 @@ export default {
         this.ToDos = [];
       }
     });
-    onSnapshot(doc(db, `users/${auth.currentUser?.uid}`), (doc) => {
-      this.ToDos = doc.data();
-    });
+    const unsub = onSnapshot(
+      doc(db, `users/${auth.currentUser?.uid}`),
+      (doc) => {
+        console.log("Current data: ", doc.data());
+      }
+    );
   },
 };
 </script>
@@ -205,12 +223,28 @@ input {
   background-color: red;
 }
 
+.delete:hover {
+  background-color: rgb(255, 83, 83);
+}
+
 .edit {
   background-color: green;
 }
 
-#completed {
+.completed {
   color: rgb(150, 150, 150);
   text-decoration: line-through;
+}
+
+input.error {
+  color: red;
+  border-color: red;
+  border: 1px;
+  border-style: solid;
+}
+
+.error,
+::placeholder {
+  color: red;
 }
 </style>
