@@ -47,6 +47,7 @@
 import { auth } from "../firebase";
 import { onAuthStateChanged, EmailAuthProvider } from "@firebase/auth";
 import "firebaseui";
+import { setDoc } from "@firebase/firestore";
 
 export default {
   data() {
@@ -81,12 +82,10 @@ export default {
       auth.signOut();
     },
   },
-
   mounted() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.loggedIn = true;
-        const uid = user.uid;
         console.log(user.email + " is logged in!");
       } else {
         this.loggedIn = false;
@@ -97,7 +96,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .btn-grid {
   display: flex;
   align-items: center;
@@ -113,7 +112,6 @@ export default {
   border: none;
   padding: 10px 30px;
   border-radius: 5px;
-  /* margin: 10px; */
   font-size: 15px;
   outline: none;
 }
