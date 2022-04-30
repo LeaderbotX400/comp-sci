@@ -4,6 +4,7 @@
       <input
         :class="{ error: hasError }"
         v-model="newItem"
+        @keyup.enter="addItem(newItem)"
         placeholder="Edit me"
       />
 
@@ -85,10 +86,12 @@ export default {
         await updateDoc(docRef, {
           todo: arrayUnion(input),
         });
-        this.ToDos.push(input);
-      } else {
+        this.hasError = false;
+        // this.ToDos.push(input);
+      } else if (item == "") {
         this.hasError = true;
       }
+      console.log(this.hasError);
     },
     async deleteItem(item) {
       const docRef = doc(db, `users/${auth.currentUser?.uid}`);
@@ -129,12 +132,10 @@ export default {
         this.ToDos = [];
       }
     });
-    const unsub = onSnapshot(
-      doc(db, `users/${auth.currentUser?.uid}`),
-      (doc) => {
-        console.log("Current data: ", doc.data());
-      }
-    );
+    onSnapshot(doc(db, `users/${auth.currentUser?.uid}`), (doc) => {
+      console.log("Current data: ", doc.data());
+      this.ToDos = doc.data();
+    });
   },
 };
 </script>
@@ -243,8 +244,7 @@ input.error {
   border-style: solid;
 }
 
-.error,
-::placeholder {
+.error::placeholder {
   color: red;
 }
 </style>
