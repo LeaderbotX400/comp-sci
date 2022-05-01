@@ -2,19 +2,21 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAz4bvtFOdbaoGNgPpq3u175P8iDiBZEHU",
-  authDomain: "vue-todo-3db07.firebaseapp.com",
-  projectId: "vue-todo-3db07",
-  storageBucket: "vue-todo-3db07.appspot.com",
-  messagingSenderId: "626951328221",
-  appId: "1:626951328221:web:6a15c0f6c30191086a6634",
-  measurementId: "G-96JXNC4X13",
+  apiKey: "AIzaSyCtRPrBfcrjniwe3ubBZ1KIH8noYdiglD0",
+  authDomain: "comp-sci-site.firebaseapp.com",
+  projectId: "comp-sci-site",
+  storageBucket: "comp-sci-site.appspot.com",
+  messagingSenderId: "298035394065",
+  appId: "1:298035394065:web:f09e47af36cf1d49f323b0",
+  measurementId: "G-8EPST1RMB6",
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const analytics = getAnalytics(app);
 
-export { auth, db };
+export { auth, db, analytics };
