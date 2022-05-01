@@ -7,27 +7,32 @@
       you can also use the Navbar at the top of the screen
     </h3>
     <h3></h3>
-    <div class="flex-container">
-      <div class="flex-child">
-        <h3>Games</h3>
-        <div id="btn-grid">
-          <router-link to="/games/dragon">
-            <button>RNG Dragon</button>
-          </router-link>
-          <a href="/games/pokemon/index.html"
-            ><button>Pokemon Simulator</button></a
-          >
+    <div class="grid">
+      <div class="flex-container">
+        <div class="flex-child">
+          <h3>Games</h3>
+          <div id="btn-grid">
+            <router-link to="/games/dragon">
+              <button>RNG Dragon</button>
+            </router-link>
+            <a href="/games/pokemon/index.html"
+              ><button>Pokemon Simulator</button></a
+            >
+          </div>
         </div>
-      </div>
-      <div class="flex-child">
-        <h3>API based applications</h3>
-        <div id="btn-grid">
-          <router-link to="/fetch/pokedex">
-            <button>Pokedex</button>
-          </router-link>
-          <router-link to="/fetch/weather">
-            <button>Weather</button>
-          </router-link>
+        <div class="flex-child">
+          <h3>API based applications</h3>
+          <div id="btn-grid">
+            <router-link to="/fetch/pokedex">
+              <button>Pokedex</button>
+            </router-link>
+            <router-link to="/fetch/weather">
+              <button>Weather</button>
+            </router-link>
+            <router-link to="/misc/todo">
+              <button>To-Do</button>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -48,6 +53,10 @@ export default {
 </script>
 
 <style scoped>
+.grid {
+  display: grid;
+  grid-template-columns: auto;
+}
 @media (min-width: 768px) {
   .flex-container {
     display: flex;
@@ -68,15 +77,15 @@ export default {
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -45%);
   box-shadow: 2px 2px 5px 2px rgb(175, 176, 202);
-  transform: translate(-50%, -50%);
   background-color: white;
   border-radius: 10px;
 }
 #btn-grid {
   display: flex;
   justify-content: center;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   margin: 8px;
   padding: 4px;
@@ -95,6 +104,7 @@ button {
   border-radius: 5px;
   margin: 10px;
   font-size: 15px;
+  width: 200px;
   outline: none;
   box-shadow: 2px 2px 5px 2px rgb(201, 202, 230);
 }

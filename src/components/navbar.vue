@@ -22,18 +22,11 @@
         <div class="subnav-content">
           <router-link to="/fetch/pokedex">Pokedex</router-link>
           <router-link to="/fetch/weather">Weather</router-link>
-        </div>
-      </div>
-      <!-- Misc -->
-      <div class="subnav">
-        <button class="subnavbtn">
-          <i class="fas fa-terminal"></i> Misc <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="subnav-content">
-          <router-link to="/misc/todo">To-Do</router-link>
+          <router-link to="/misc/todo">To-Do app</router-link>
         </div>
       </div>
     </div>
+    <!-- Auth button -->
     <div class="auth">
       <button class="login btn" @click="showAuthMenu" v-if="!loggedIn">
         Login
@@ -45,7 +38,11 @@
 
 <script>
 import { auth } from "../firebase";
-import { onAuthStateChanged, EmailAuthProvider } from "@firebase/auth";
+import {
+  onAuthStateChanged,
+  EmailAuthProvider,
+  GoogleAuthProvider,
+} from "@firebase/auth";
 import "firebaseui";
 import { setDoc } from "@firebase/firestore";
 
@@ -73,6 +70,9 @@ export default {
         signInOptions: [
           {
             provider: EmailAuthProvider.PROVIDER_ID,
+          },
+          {
+            provider: GoogleAuthProvider.PROVIDER_ID,
           },
         ],
       };

@@ -1,34 +1,36 @@
 <template>
   <div id="container">
-    <div class="flex-container input">
-      <input
-        :class="{ error: hasError }"
-        v-model="newItem"
-        @keyup.enter="addItem(newItem)"
-        placeholder="Edit me"
-      />
-
-      <button class="btn" id="add-btn" @click="addItem(newItem)">
-        Add Task <i class="fa fa-plus icon" aria-hidden="true"></i>
-      </button>
-    </div>
-    <div class="flex-container tasks">
-      <div class="todo" v-for="item in ToDos" :key="item">
+    <h3 id="message" v-if="!loggedIn">log in to use this app</h3>
+    <div v-if="loggedIn">
+      <div class="flex-container input">
         <input
-          type="checkbox"
-          name="completed"
-          @click="completeItem(item)"
-          :checked="item.completed"
+          :class="{ error: hasError }"
+          v-model="newItem"
+          @keyup.enter="addItem(newItem)"
+          placeholder="Edit me"
         />
-        <p :class="{ completed: item.completed }">
-          {{ item.text }}
-        </p>
-        <button class="delete btn" @click="deleteItem(item)">
-          Delete <i class="fa fa-trash" aria-hidden="true"></i>
+
+        <button class="btn" id="add-btn" @click="addItem(newItem)">
+          <i class="fa fa-plus icon" aria-hidden="true"></i>
         </button>
       </div>
+      <div class="flex-container tasks">
+        <div class="todo" v-for="item in ToDos" :key="item">
+          <input
+            type="checkbox"
+            name="completed"
+            @click="completeItem(item)"
+            :checked="item.completed"
+          />
+          <p :class="{ completed: item.completed }">
+            {{ item.text }}
+          </p>
+          <button class="delete btn" @click="deleteItem(item)">
+            Delete <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
     </div>
-    <button @click="deleteAllItems">Remove All</button>
   </div>
 </template>
 
@@ -51,6 +53,7 @@ export default {
       ToDos: [],
       completed: false,
       hasError: false,
+      loggedIn: false,
     };
   },
   beforeCreate: function () {
@@ -74,7 +77,6 @@ export default {
           todo: [],
         });
       }
-      console.log(this.ToDos);
     },
     async addItem(item) {
       const docRef = doc(db, `users/${auth.currentUser?.uid}`);
@@ -82,16 +84,18 @@ export default {
         text: item,
         completed: false,
       };
-      if (item !== "") {
-        await updateDoc(docRef, {
-          todo: arrayUnion(input),
-        });
-        this.hasError = false;
-        // this.ToDos.push(input);
-      } else if (item == "") {
+      if (auth.currentUser == null) {
         this.hasError = true;
+      } else {
+        if (item !== "") {
+          await updateDoc(docRef, {
+            todo: arrayUnion(input),
+          });
+          this.hasError = false;
+        } else if (item == "") {
+          this.hasError = true;
+        }
       }
-      console.log(this.hasError);
     },
     async deleteItem(item) {
       const docRef = doc(db, `users/${auth.currentUser?.uid}`);
@@ -107,13 +111,11 @@ export default {
     },
     async completeItem(item) {
       const docRef = doc(db, `users/${auth.currentUser?.uid}`);
+      let temp = [...this.ToDos];
+      let index = temp.indexOf(item);
+      temp[index].completed = !temp[index].completed;
       await updateDoc(docRef, {
-        todo: [
-          {
-            completed: !item.completed,
-            text: item.text,
-          },
-        ],
+        todo: temp,
       });
     },
     async deleteAllItems() {
@@ -121,20 +123,22 @@ export default {
       await updateDoc(docRef, {
         todo: [],
       });
-      this.ToDos = [];
     },
   },
   mounted() {
     auth.onAuthStateChanged((user) => {
       if (user) {
+        this.loggedIn = true;
         this.init(user.uid);
+        try {
+          onSnapshot(doc(db, `users/${user.uid}`), (doc) => {
+            this.ToDos = [...doc.data().todo];
+          });
+        } catch {}
       } else {
+        this.loggedIn = false;
         this.ToDos = [];
       }
-    });
-    onSnapshot(doc(db, `users/${auth.currentUser?.uid}`), (doc) => {
-      console.log("Current data: ", doc.data());
-      this.ToDos = doc.data();
     });
   },
 };
@@ -169,12 +173,14 @@ p {
   padding: 30px;
   background-color: rgb(61, 105, 201);
   border-radius: 10px;
+  min-width: 300px;
 }
 
 #add-btn {
   background-color: rgb(16, 214, 105);
   border: 5px;
   border-radius: 0 5px 5px 0;
+  padding: 10px;
 }
 
 #add-btn:hover {
@@ -205,10 +211,8 @@ input {
 
 .tasks {
   display: flex;
-  align-items: center;
   flex-direction: column;
 }
-
 .todo {
   display: flex;
   background-color: white;
@@ -216,7 +220,7 @@ input {
   padding: 0 10px;
   justify-content: space-between;
   align-items: center;
-  width: 290px;
+  /* min-width: 300px; */
   border-radius: 10px;
 }
 
@@ -246,5 +250,9 @@ input.error {
 
 .error::placeholder {
   color: red;
+}
+
+p {
+  font-family: Arial;
 }
 </style>
