@@ -1,37 +1,39 @@
 <template>
-  <div id="container">
-    <h1>Hello There!</h1>
-    <h3>
-      Welcome to my small corner of the internet.<br />Use the buttons below to
-      navigate this site, <br />
-      you can also use the Navbar at the top of the screen
-    </h3>
-    <h3></h3>
-    <div class="grid">
-      <div class="flex-container">
-        <div class="flex-child">
-          <h3>Games</h3>
-          <div id="btn-grid">
-            <router-link to="/games/dragon">
-              <button>RNG Dragon</button>
-            </router-link>
-            <a href="/games/pokemon/index.html"
-              ><button>Pokemon Simulator</button></a
-            >
+  <div class="grid">
+    <div id="container">
+      <h1>Hello There!</h1>
+      <h3>
+        Welcome to my small corner of the internet.<br />Use the buttons below
+        to navigate this site, <br />
+        you can also use the Navbar at the top of the screen
+      </h3>
+      <h3></h3>
+      <div class="grid">
+        <div class="flex-container">
+          <div class="flex-child">
+            <h3>Games</h3>
+            <div id="btn-grid">
+              <router-link to="/games/dragon">
+                <button>RNG Dragon</button>
+              </router-link>
+              <a href="/games/pokemon/index.html"
+                ><button>Pokemon Simulator</button></a
+              >
+            </div>
           </div>
-        </div>
-        <div class="flex-child">
-          <h3>API based applications</h3>
-          <div id="btn-grid">
-            <router-link to="/fetch/pokedex">
-              <button>Pokedex</button>
-            </router-link>
-            <router-link to="/fetch/weather">
-              <button>Weather</button>
-            </router-link>
-            <router-link to="/misc/todo">
-              <button>To-Do</button>
-            </router-link>
+          <div class="flex-child">
+            <h3>API based applications</h3>
+            <div id="btn-grid">
+              <router-link to="/fetch/pokedex">
+                <button>Pokedex</button>
+              </router-link>
+              <router-link to="/fetch/weather">
+                <button>Weather</button>
+              </router-link>
+              <router-link to="/misc/todo">
+                <button>To-Do</button>
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -55,7 +57,8 @@ export default {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: auto;
+  place-items: center;
+  margin-top: 20px;
 }
 @media (min-width: 768px) {
   .flex-container {
@@ -73,11 +76,7 @@ export default {
 }
 
 #container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -45%);
+  max-width: fit-content;
   box-shadow: 2px 2px 5px 2px rgb(175, 176, 202);
   background-color: white;
   border-radius: 10px;
@@ -89,11 +88,6 @@ export default {
   align-items: center;
   margin: 8px;
   padding: 4px;
-}
-body {
-  text-align: center;
-  font-family: Arial;
-  background-image: url("/src/assets/images/background.jpg");
 }
 
 button {
