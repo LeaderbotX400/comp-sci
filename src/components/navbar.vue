@@ -38,11 +38,7 @@
 
 <script>
 import { auth } from "../firebase";
-import {
-  onAuthStateChanged,
-  EmailAuthProvider,
-  GoogleAuthProvider,
-} from "@firebase/auth";
+import { EmailAuthProvider, GoogleAuthProvider } from "@firebase/auth";
 import "firebaseui";
 import { setDoc } from "@firebase/firestore";
 
