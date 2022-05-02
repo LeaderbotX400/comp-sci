@@ -1,33 +1,35 @@
 <template>
-  <div id="container">
-    <h3 id="message" v-if="!loggedIn">log in to use this app</h3>
-    <div v-if="loggedIn">
-      <div class="flex-container input">
-        <input
-          :class="{ error: hasError }"
-          v-model="newItem"
-          @keyup.enter="addItem(newItem)"
-          placeholder="Edit me"
-        />
-
-        <button class="btn" id="add-btn" @click="addItem(newItem)">
-          <i class="fa fa-plus icon" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="flex-container tasks">
-        <div class="todo" v-for="item in ToDos" :key="item">
+  <div class="grid">
+    <div id="container">
+      <h3 id="message" v-if="!loggedIn">log in to use this app</h3>
+      <div v-if="loggedIn">
+        <div class="flex-container input">
           <input
-            type="checkbox"
-            name="completed"
-            @click="completeItem(item)"
-            :checked="item.completed"
+            :class="{ error: hasError }"
+            v-model="newItem"
+            @keyup.enter="addItem(newItem)"
+            placeholder="Edit me"
           />
-          <p :class="{ completed: item.completed }">
-            {{ item.text }}
-          </p>
-          <button class="delete btn" @click="deleteItem(item)">
-            Delete <i class="fa fa-trash" aria-hidden="true"></i>
+
+          <button class="btn" id="add-btn" @click="addItem(newItem)">
+            <i class="fa fa-plus icon" aria-hidden="true"></i>
           </button>
+        </div>
+        <div class="flex-container tasks">
+          <div class="todo" v-for="item in ToDos" :key="item">
+            <input
+              type="checkbox"
+              name="completed"
+              @click="completeItem(item)"
+              :checked="item.completed"
+            />
+            <p :class="{ completed: item.completed }">
+              {{ item.text }}
+            </p>
+            <button class="delete btn" @click="deleteItem(item)">
+              Delete <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -96,6 +98,7 @@ export default {
           this.hasError = true;
         }
       }
+      this.newItem = "";
     },
     async deleteItem(item) {
       const docRef = doc(db, `users/${auth.currentUser?.uid}`);
@@ -145,11 +148,15 @@ export default {
 </script>
 
 <style scoped>
-@media (min-width: 768px) {
-  .flex-container {
-    display: flex;
-    max-width: 720px;
-  }
+.grid {
+  display: grid;
+  place-items: center;
+  margin-top: 30px;
+  padding: 10px;
+}
+.flex-container {
+  display: flex;
+  max-width: 720px;
 }
 .flex-child {
   flex: 1;
@@ -165,11 +172,6 @@ p {
 }
 
 #container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
   padding: 30px;
   background-color: rgb(61, 105, 201);
   border-radius: 10px;
@@ -198,7 +200,7 @@ p {
 
 input {
   border: none;
-  padding: 10px 30px;
+  padding: 10px 29px;
   font-size: 15px;
   outline: none;
   border-radius: 5px 0 0 5px;
@@ -206,7 +208,6 @@ input {
 
 .input {
   padding: 10px 10px;
-  border-radius: 10px;
 }
 
 .tasks {
@@ -220,7 +221,6 @@ input {
   padding: 0 10px;
   justify-content: space-between;
   align-items: center;
-  /* min-width: 300px; */
   border-radius: 10px;
 }
 
@@ -230,10 +230,6 @@ input {
 
 .delete:hover {
   background-color: rgb(255, 83, 83);
-}
-
-.edit {
-  background-color: green;
 }
 
 .completed {
@@ -250,9 +246,5 @@ input.error {
 
 .error::placeholder {
   color: red;
-}
-
-p {
-  font-family: Arial;
 }
 </style>
