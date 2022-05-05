@@ -70,7 +70,7 @@ export default {
         if (docSnap.data().todo) {
           this.ToDos = docSnap.data().todo;
         } else {
-          await setDoc(docRef, {
+          await updateDoc(docRef, {
             todo: [],
           });
         }
@@ -106,11 +106,6 @@ export default {
       await updateDoc(docRef, {
         todo: arrayRemove(item),
       });
-
-      let index = this.ToDos.indexOf(item);
-      if (this.ToDos.indexOf(item) !== -1) {
-        this.ToDos.splice(index, 1);
-      }
     },
     async completeItem(item) {
       const docRef = doc(db, `users/${auth.currentUser?.uid}`);
@@ -133,11 +128,11 @@ export default {
       if (user) {
         this.loggedIn = true;
         this.init(user.uid);
-        try {
-          onSnapshot(doc(db, `users/${user.uid}`), (doc) => {
+        onSnapshot(doc(db, `users/${user.uid}`), (doc) => {
+          try {
             this.ToDos = [...doc.data().todo];
-          });
-        } catch {}
+          } catch {}
+        });
       } else {
         this.loggedIn = false;
         this.ToDos = [];

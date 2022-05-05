@@ -1,7 +1,7 @@
 <template>
   <!-- The navigation menu -->
   <div class="navbar">
-    <div class="btn-grid">
+    <div class="button-grid">
       <router-link to="/"><i class="fas fa-home"></i> Home</router-link>
       <!-- Games -->
       <div class="subnav">
@@ -28,10 +28,12 @@
     </div>
     <!-- Auth button -->
     <div class="auth">
-      <button class="login btn" @click="showAuthMenu" v-if="!loggedIn">
+      <button class="login button" @click="showAuthMenu" v-if="!loggedIn">
         Login
       </button>
-      <button class="logout btn" @click="logout" v-if="loggedIn">Logout</button>
+      <button class="logout button" @click="logout" v-if="loggedIn">
+        Logout
+      </button>
     </div>
   </div>
 </template>
@@ -93,7 +95,7 @@ export default {
 </script>
 
 <style scoped>
-.btn-grid {
+.button-grid {
   display: flex;
   align-items: center;
 }
@@ -102,7 +104,7 @@ export default {
 .auth {
   display: flex;
 }
-.btn {
+.button {
   background-color: #333;
   color: white;
   border: none;
@@ -130,7 +132,7 @@ export default {
 }
 
 /* Navigation links */
-.btn-grid a {
+.button-grid a {
   font-family: Arial;
   float: left;
   font-size: 16px;
@@ -159,7 +161,7 @@ export default {
 }
 
 /* Add a skyblue background color to navigation links on hover */
-.btn-grid a:hover,
+.button-grid a:hover,
 .subnav:hover .subnavbtn {
   background-color: skyblue;
 }

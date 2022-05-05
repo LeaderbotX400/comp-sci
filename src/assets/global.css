@@ -22,3 +22,7 @@ body.dragon {
 body.todo {
   background-color: #293251;
 }
+
+body.chat {
+  background-color: white;
+}

@@ -33,6 +33,9 @@
               <router-link to="/misc/todo">
                 <button>To-Do</button>
               </router-link>
+              <router-link to="/misc/chat">
+                <button>Chat App</button>
+              </router-link>
             </div>
           </div>
         </div>
