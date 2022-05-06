@@ -39,19 +39,46 @@
 </template>
 
 <script>
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { EmailAuthProvider, GoogleAuthProvider } from "@firebase/auth";
 import "firebaseui";
-import { setDoc } from "@firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc } from "@firebase/firestore";
 
 export default {
   data() {
     return {
       showAuth: false,
       loggedIn: false,
+      info: null,
     };
   },
   methods: {
+    async init(user) {
+      const docRef = doc(db, `users/${user.uid}`);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        if (docSnap.data().info) {
+          this.info = docSnap.data().info;
+        } else {
+          await updateDoc(docRef, {
+            info: {
+              uid: user.uid,
+              name: user.displayName,
+              email: [user.email],
+            },
+          });
+        }
+      } else {
+        await setDoc(docRef, {
+          info: {
+            uid: user.uid,
+            name: user.displayName,
+            email: user.email,
+          },
+        });
+      }
+    },
     showAuthMenu() {
       let ui = firebaseui.auth.AuthUI.getInstance();
       if (!ui) {
@@ -60,7 +87,6 @@ export default {
       const uiConfig = {
         callbacks: {
           signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-            // Handle the result
             return false;
           },
         },
@@ -68,6 +94,7 @@ export default {
         signInOptions: [
           {
             provider: EmailAuthProvider.PROVIDER_ID,
+            requireDisplayName: true,
           },
           {
             provider: GoogleAuthProvider.PROVIDER_ID,
@@ -85,6 +112,7 @@ export default {
       if (user) {
         this.loggedIn = true;
         console.log(user.email + " is logged in!");
+        this.init(user);
       } else {
         this.loggedIn = false;
         console.log("User is logged out!");
