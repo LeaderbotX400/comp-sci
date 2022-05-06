@@ -13,9 +13,9 @@
     <div class="message-body mt-3" v-else>
       <h3>Chat</h3>
       <h5>Welcome {{ name }}!</h5>
-      <div class="navbar">
-        <button>Home</button>
-      </div>
+      <span class="navbar" v-for="room in rooms" :key="room">
+        <button class="btn">{{ room.name }}</button>
+      </span>
       <div class="card">
         <div class="card-body">
           <div
@@ -47,15 +47,18 @@
 
 <script>
 import { auth, db } from "../firebase";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import {
   doc,
-  setDoc,
-  getDoc,
+  query,
+  getDocs,
   updateDoc,
   arrayUnion,
+  addDoc,
+  collection,
   arrayRemove,
   onSnapshot,
+  where,
 } from "firebase/firestore";
 export default {
   beforeCreate: function () {
@@ -67,28 +70,29 @@ export default {
       name: null,
       showMessage: "",
       roomName: "",
+      rooms: [],
+      currentRoom: "",
       messages: [],
     };
   },
   methods: {
-    async init(user) {
-      const docRef = doc(db, `rooms/ql54P0Dk8CUYo3kN7KTF`);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        if (docSnap.data().chat) {
-          console.log(docSnap.data().chat);
-          this.messages = docSnap.data().chat;
-        } else {
-          await updateDoc(docRef, {
-            chat: [],
+    async init() {
+      const q = query(
+        collection(db, "rooms"),
+        where("users", "array-contains", auth.currentUser?.uid)
+      );
+      // const querySnapshotRef = await getDocs(q);
+      onSnapshot(q, (snapshot) => {
+        this.rooms = [];
+        snapshot.forEach((doc) => {
+          this.rooms.push({
+            id: doc.id,
+            name: doc.data().name,
           });
-        }
-      } else {
-        await setDoc(docRef, {
-          chat: [],
+          console.log(doc.id, " => ", doc.data());
         });
-      }
+        console.log(this.rooms);
+      });
     },
     async addItem(item) {
       const docRef = doc(db, `rooms/ql54P0Dk8CUYo3kN7KTF`);
@@ -112,7 +116,7 @@ export default {
       this.newItem = "";
     },
     async generateRoom(roomName) {
-      await setDoc(doc(db, "rooms", uuidv4()), {
+      await addDoc(collection(db, "rooms"), {
         name: roomName,
         chat: [],
         users: [auth.currentUser?.uid],
@@ -125,12 +129,7 @@ export default {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.name = user.displayName;
-        this.init(user.uid);
-        try {
-          onSnapshot(doc(db, `rooms/ql54P0Dk8CUYo3kN7KTF`), (doc) => {
-            this.messages = [...doc.data().chat];
-          });
-        } catch {}
+        this.init();
       } else {
         this.name = null;
       }
@@ -160,7 +159,12 @@ export default {
 </script>
 
 <style scoped>
-#app {
+.navbar {
+  overflow: scroll;
+  justify-content: space-between;
+}
+
+#container {
   font-family: "Roboto", sans-serif;
   font-size: 18px;
 }
