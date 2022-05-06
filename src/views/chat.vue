@@ -13,6 +13,9 @@
     <div class="message-body mt-3" v-else>
       <h3>Chat</h3>
       <h5>Welcome {{ name }}!</h5>
+      <div class="navbar">
+        <button>Home</button>
+      </div>
       <div class="card">
         <div class="card-body">
           <div
@@ -20,21 +23,31 @@
             v-for="message in messages"
             :key="message"
           >
-            <span class="mg-text">{{ message.name }}</span>
+            <span class="mg-text">{{ message.owner }}</span>
             <p class="message pt-1">{{ message.text }}</p>
           </div>
         </div>
       </div>
-      <input v-model="showMessage" type="text" class="mt-3 mr-2 pl-2 pr-2" />
-      <button class="btn btn-primary" @click="sendMessage(showMessage)">
-        Send
-      </button>
+      <div id="text">
+        <input v-model="roomName" type="text" class="mt-3 mr-2 pl-2 pr-2" />
+        <button class="btn btn-primary" @click="generateRoom(roomName)">
+          Generate Room
+        </button>
+      </div>
+
+      <div id="text">
+        <input v-model="showMessage" type="text" class="mt-3 mr-2 pl-2 pr-2" />
+        <button class="btn btn-primary" @click="addItem(showMessage)">
+          Send
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { auth, db } from "../firebase";
+import { v4 as uuidv4 } from "uuid";
 import {
   doc,
   setDoc,
@@ -53,16 +66,18 @@ export default {
     return {
       name: null,
       showMessage: "",
+      roomName: "",
       messages: [],
     };
   },
   methods: {
     async init(user) {
-      const docRef = doc(db, `users/${user}`);
+      const docRef = doc(db, `rooms/ql54P0Dk8CUYo3kN7KTF`);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         if (docSnap.data().chat) {
+          console.log(docSnap.data().chat);
           this.messages = docSnap.data().chat;
         } else {
           await updateDoc(docRef, {
@@ -76,10 +91,11 @@ export default {
       }
     },
     async addItem(item) {
-      const docRef = doc(db, `users/${auth.currentUser?.uid}`);
+      const docRef = doc(db, `rooms/ql54P0Dk8CUYo3kN7KTF`);
       let input = {
+        id: Math.random(),
         text: item,
-        completed: false,
+        owner: auth.currentUser?.displayName,
       };
       if (auth.currentUser == null) {
         this.hasError = true;
@@ -95,26 +111,26 @@ export default {
       }
       this.newItem = "";
     },
-    sendMessage() {
-      const message = {
-        text: this.showMessage,
-        username: this.name,
-      };
-
-      this.showMessage = "";
+    async generateRoom(roomName) {
+      await setDoc(doc(db, "rooms", uuidv4()), {
+        name: roomName,
+        chat: [],
+        users: [auth.currentUser?.uid],
+      });
+      this.roomName = "";
     },
+    async changeRooms(roomName) {},
   },
   mounted() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
         this.name = user.displayName;
         this.init(user.uid);
-        // try {
-        //   onSnapshot(doc(db, `users/${user.uid}`), (doc) => {
-        //     this.ToDos = [...doc.data().chat];
-        //   });
-        // } catch {}
+        try {
+          onSnapshot(doc(db, `rooms/ql54P0Dk8CUYo3kN7KTF`), (doc) => {
+            this.messages = [...doc.data().chat];
+          });
+        } catch {}
       } else {
         this.name = null;
       }
