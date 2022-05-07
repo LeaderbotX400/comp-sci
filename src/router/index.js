@@ -27,12 +27,12 @@ const routes = [
     component: () => import("../views/weather.vue"),
   },
   {
-    path: "/misc/todo",
+    path: "/firebase/todo",
     name: "ToDo",
     component: () => import("../views/todo.vue"),
   },
   {
-    path: "/misc/chat",
+    path: "/firebase/chat",
     name: "Chat",
     component: () => import("../views/chat.vue"),
   },

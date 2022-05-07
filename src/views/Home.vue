@@ -30,10 +30,10 @@
               <router-link to="/fetch/weather">
                 <button>Weather</button>
               </router-link>
-              <router-link to="/misc/todo">
+              <router-link to="/firebase/todo">
                 <button>To-Do</button>
               </router-link>
-              <router-link to="/misc/chat">
+              <router-link to="/firebase/chat">
                 <button>Chat App</button>
               </router-link>
             </div>

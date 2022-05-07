@@ -1,10 +1,8 @@
 <template>
-  <!-- The navigation menu -->
   <div class="navbar">
     <div class="button-grid">
       <router-link to="/"><i class="fas fa-home"></i> Home</router-link>
-      <!-- Games -->
-      <div class="subnav">
+      <div id="games" class="subnav">
         <button class="subnavbtn">
           <i class="fas fa-gamepad"></i> Games <i class="fa fa-caret-down"></i>
         </button>
@@ -13,8 +11,7 @@
           <router-link to="/games/dragon">RNG Dragon</router-link>
         </div>
       </div>
-      <!-- API based applications -->
-      <div class="subnav">
+      <div id="apis" class="subnav">
         <button class="subnavbtn">
           <i class="fas fa-terminal"></i> Api(s)
           <i class="fa fa-caret-down"></i>
@@ -22,18 +19,25 @@
         <div class="subnav-content">
           <router-link to="/fetch/pokedex">Pokedex</router-link>
           <router-link to="/fetch/weather">Weather</router-link>
-          <router-link to="/misc/todo">To-Do app</router-link>
+          <router-link to="/firebase/todo">To-Do app</router-link>
+        </div>
+      </div>
+      <div id="firebase" class="subnav">
+        <button class="subnavbtn">
+          <i class="fa fa-fire" aria-hidden="true" /> Firebase
+          <i class="fa fa-caret-down" />
+        </button>
+        <div class="subnav-content">
+          <router-link to="/firebase/todo">To-Do app</router-link>
+          <router-link to="/firebase/chat">Chat app</router-link>
         </div>
       </div>
     </div>
-    <!-- Auth button -->
     <div class="auth">
       <button class="login button" @click="showAuthMenu" v-if="!loggedIn">
         Login
       </button>
-      <button class="logout button" @click="logout" v-if="loggedIn">
-        Logout
-      </button>
+      <button class="logout button" @click="logout" v-else>Logout</button>
     </div>
   </div>
 </template>
@@ -111,11 +115,9 @@ export default {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.loggedIn = true;
-        console.log(user.email + " is logged in!");
         this.init(user);
       } else {
         this.loggedIn = false;
-        console.log("User is logged out!");
       }
     });
   },
