@@ -7,10 +7,9 @@
         to navigate this site, <br />
         you can also use the Navbar at the top of the screen
       </h3>
-      <h3></h3>
       <div class="grid">
         <div class="flex-container">
-          <div class="flex-child">
+          <div id="games" class="flex-child">
             <h3>Games</h3>
             <div id="btn-grid">
               <router-link to="/games/dragon">
@@ -21,7 +20,18 @@
               >
             </div>
           </div>
-          <div class="flex-child">
+          <div id="firebase" class="flex-child">
+            <h3>Firebase</h3>
+            <div id="btn-grid">
+              <router-link to="/firebase/todo">
+                <button>To-Do App</button>
+              </router-link>
+              <router-link to="/firebase/chat">
+                <button>Chat App</button>
+              </router-link>
+            </div>
+          </div>
+          <div id="apis" class="flex-child">
             <h3>API based applications</h3>
             <div id="btn-grid">
               <router-link to="/fetch/pokedex">
@@ -29,12 +39,6 @@
               </router-link>
               <router-link to="/fetch/weather">
                 <button>Weather</button>
-              </router-link>
-              <router-link to="/firebase/todo">
-                <button>To-Do</button>
-              </router-link>
-              <router-link to="/firebase/chat">
-                <button>Chat App</button>
               </router-link>
             </div>
           </div>
@@ -66,16 +70,14 @@ export default {
 @media (min-width: 768px) {
   .flex-container {
     display: flex;
+    overflow-y: scroll;
+    justify-content: space-between;
     max-width: 720px;
   }
 }
 .flex-child {
   flex: 1;
   border: 2px;
-}
-
-.flex-child:first-child {
-  margin-right: 20px;
 }
 
 #container {
@@ -100,7 +102,7 @@ button {
   padding: 15px 35px;
   border-radius: 5px;
   margin: 10px;
-  font-size: 15px;
+  font-size: 14px;
   width: 200px;
   outline: none;
   box-shadow: 2px 2px 5px 2px rgb(201, 202, 230);
