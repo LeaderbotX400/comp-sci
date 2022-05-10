@@ -1,62 +1,83 @@
 <template>
-  <div id="container">
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-      crossorigin="anonymous"
-    />
-    <!-- Login section -->
-    <div class="login mt-5" v-if="!name">
-      <h3 class="mt-5">Please Login in to use this app</h3>
-    </div>
-    <!-- Chat section -->
-    <div class="message-body mt-3" v-else>
-      <h3>Chat</h3>
-      <h5>Welcome {{ name }}!</h5>
-      <span class="navbar" v-for="room in rooms" :key="room">
-        <button class="btn">{{ room.name }}</button>
-      </span>
-      <div class="card">
-        <div class="card-body">
+  <div class="view chat">
+    <header>
+      <h1>Welcome, {{ user.displayName }}</h1>
+      <div class="nav">
+        <div class="btn-grid">
+          <button class="room" @click="showRoomGen = !showRoomGen">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
           <div
-            class="border pl-2 pt-1 ml-2 message-text mb-2"
-            v-for="message in messages"
-            :key="message"
+            class="room"
+            @click="changeRoom(room)"
+            v-for="room in rooms"
+            :key="room"
           >
-            <span class="mg-text">{{ message.owner }}</span>
-            <p class="message pt-1">{{ message.text }}</p>
+            {{ room.name }}
+            <button
+              class="delete-btn"
+              @click="deleteRoom(room)"
+              v-if="currentRoom.id == room.id"
+            >
+              <i class="fa fa-trash" aria-hidden="true" />
+            </button>
           </div>
         </div>
+        <div class="btn-grid roomGen" v-if="showRoomGen">
+          <input
+            v-model="newRoom"
+            type="text"
+            class="textbox"
+            placeholder="Enter Room Name"
+          />
+          <button class="room" @click="generateRoom(newRoom)">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
-      <div id="text">
-        <input v-model="roomName" type="text" class="mt-3 mr-2 pl-2 pr-2" />
-        <button class="btn btn-primary" @click="generateRoom(roomName)">
-          Generate Room
-        </button>
+    </header>
+    <section class="chat-box">
+      <div class="welcome">
+        <h3 v-if="currentRoom != ''">Welcome to {{ currentRoom.name }}</h3>
       </div>
-
-      <div id="text">
-        <input v-model="showMessage" type="text" class="mt-3 mr-2 pl-2 pr-2" />
-        <button class="btn btn-primary" @click="addItem(showMessage)">
-          Send
-        </button>
+      <div
+        v-for="message in messages"
+        :key="message"
+        :class="
+          message.owner == user.displayName ? 'message current-user' : 'message'
+        "
+      >
+        <div class="message-inner">
+          <div class="username">{{ message.owner }}</div>
+          <div class="content">{{ message.text }}</div>
+        </div>
       </div>
-    </div>
+    </section>
+    <footer>
+      <form @submit.prevent="addItem(inputMessage)">
+        <input
+          type="text"
+          v-model="inputMessage"
+          placeholder="Write a message..."
+        />
+        <input type="submit" value="Send" />
+      </form>
+    </footer>
   </div>
 </template>
 
 <script>
 import { auth, db } from "../firebase";
-// import { v4 as uuidv4 } from "uuid";
 import {
   doc,
   query,
+  getDoc,
   getDocs,
-  updateDoc,
-  arrayUnion,
   addDoc,
+  updateDoc,
+  deleteDoc,
+  arrayUnion,
   collection,
-  arrayRemove,
   onSnapshot,
   where,
 } from "firebase/firestore";
@@ -64,15 +85,16 @@ export default {
   beforeCreate: function () {
     document.body.className = "chat";
   },
-
   data() {
     return {
-      name: null,
-      showMessage: "",
-      roomName: "",
+      user: {},
+      subs: [],
       rooms: [],
-      currentRoom: "",
       messages: [],
+      newRoom: "",
+      showRoomGen: "",
+      currentRoom: "",
+      inputMessage: "",
     };
   },
   methods: {
@@ -81,7 +103,6 @@ export default {
         collection(db, "rooms"),
         where("users", "array-contains", auth.currentUser?.uid)
       );
-      // const querySnapshotRef = await getDocs(q);
       onSnapshot(q, (snapshot) => {
         this.rooms = [];
         snapshot.forEach((doc) => {
@@ -89,135 +110,274 @@ export default {
             id: doc.id,
             name: doc.data().name,
           });
-          console.log(doc.id, " => ", doc.data());
         });
-        console.log(this.rooms);
       });
     },
     async addItem(item) {
-      const docRef = doc(db, `rooms/ql54P0Dk8CUYo3kN7KTF`);
-      let input = {
-        id: Math.random(),
-        text: item,
-        owner: auth.currentUser?.displayName,
-      };
-      if (auth.currentUser == null) {
-        this.hasError = true;
+      if (this.currentRoom.id == "") {
       } else {
+        const docRef = doc(db, `rooms/${this.currentRoom.id}`);
+        let input = {
+          id: Math.random(),
+          text: item,
+          owner: auth.currentUser.displayName,
+        };
+
         if (item !== "") {
           await updateDoc(docRef, {
             chat: arrayUnion(input),
           });
-          this.hasError = false;
         } else if (item == "") {
-          this.hasError = true;
         }
       }
       this.newItem = "";
     },
-    async generateRoom(roomName) {
+    async generateRoom(newRoom) {
       await addDoc(collection(db, "rooms"), {
-        name: roomName,
+        name: newRoom,
         chat: [],
         users: [auth.currentUser?.uid],
       });
-      this.roomName = "";
+      this.newRoom = "";
+      this.showRoomGen = false;
     },
-    async changeRooms(roomName) {},
+    async changeRoom(room) {
+      if (room == "home") {
+        this.messages = {};
+        this.currentRoom = {};
+      } else {
+        this.currentRoom = {
+          id: room.id,
+          name: room.name,
+        };
+        const docRef = doc(db, `rooms/${room.id}`);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          if (docSnap.data().chat) {
+            onSnapshot(doc(db, `rooms/${room.id}`), (doc) => {
+              try {
+                this.messages = [...doc.data().chat];
+              } catch {}
+            });
+          }
+        }
+      }
+    },
+    async deleteRoom(room) {
+      await deleteDoc(doc(db, "rooms", room.id));
+    },
   },
   mounted() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        this.name = user.displayName;
+        this.user = {
+          displayName: user.displayName,
+        };
         this.init();
       } else {
         this.name = null;
       }
     });
-    let script = document.createElement("script");
-    script.id = "tempScript";
-    script.src =
-      "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js";
-    script.crossOrigin = "anonymous";
-    document.head.appendChild(script);
-
-    let css = document.createElement("link");
-    css.id = "tempCSS";
-    css.href =
-      "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css";
-    css.crossOrigin = "anonymous";
-    document.head.appendChild(css);
-  },
-  unmounted() {
-    let temp = document.getElementById("tempScript");
-    document.head.removeChild(temp);
-
-    temp = document.getElementById("tempCSS");
-    document.head.removeChild(temp);
   },
 };
 </script>
 
-<style scoped>
-.navbar {
-  overflow: scroll;
-  justify-content: space-between;
+<style lang="scss" scoped>
+* {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-#container {
-  font-family: "Roboto", sans-serif;
-  font-size: 18px;
-}
-.login {
-  background: #fff;
-  width: 40%;
-  height: 50vh;
-  margin: auto;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-h3 {
-  font-size: 30px;
-  text-align: center;
-}
-input {
-  width: 100%;
-  border-radius: 4px;
-  border: 1px solid rgb(156, 156, 156);
-  padding-left: 2px;
-  padding-right: 2px;
-}
-.message-body {
-  width: 40%;
-  height: 80vh;
-  margin: auto;
-}
-.message-text {
-  min-width: 10%;
-  border-radius: 4px;
-}
-.message {
-  font-size: 14px;
-}
-.mg-text {
-  color: rgb(0, 195, 255);
-  font-weight: bolder;
-}
-.message-body input {
-  width: 80%;
-  border-radius: 4px;
-  border: 1px solid rgb(156, 156, 156);
-  height: 6vh;
-  padding-left: 2px;
-  padding-right: 2px;
-}
-.card {
-  width: 100%;
-  height: 75vh;
-  margin: auto;
-}
-.card-body {
-  min-height: 50vh;
-  overflow-x: scroll;
+.view {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #ea526f;
+  .nav {
+    .roomGen {
+      height: 46px;
+      .textbox {
+        border: none;
+        border-radius: 4px;
+        margin: 3px 3px -2px;
+        padding: 0px 16px;
+        -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14),
+          0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14),
+          0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+      }
+    }
+    .btn-grid {
+      display: flex;
+      margin: 8px;
+      padding: 4px;
+      border: none;
+      .room {
+        margin-top: -2px;
+        margin: 3px;
+        margin-bottom: -2px;
+        -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+          0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+          0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+        border: none;
+        border-radius: 2px;
+        display: inline-block;
+        height: 36px;
+        line-height: 36px;
+        padding: 0 16px;
+        text-transform: uppercase;
+        vertical-align: middle;
+        -webkit-tap-highlight-color: transparent;
+        text-decoration: none;
+        color: #fff;
+        background-color: #26a69a;
+        text-align: center;
+        letter-spacing: 0.5px;
+        -webkit-transition: background-color 0.2s ease-out;
+        transition: background-color 0.2s ease-out;
+        cursor: pointer;
+      }
+      .room:hover {
+        background-color: #2bbbad;
+        -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14),
+          0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14),
+          0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+      }
+      .delete-btn {
+        color: white;
+        border: none;
+        background-color: transparent;
+        padding-left: 10px;
+        text-decoration: none;
+        :hover {
+          color: red;
+        }
+      }
+    }
+  }
+  &.chat {
+    flex-direction: column;
+    header {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding: 50px 30px 10px;
+      .logout {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        appearance: none;
+        border: none;
+        outline: none;
+        background: none;
+        color: #fff;
+        font-size: 18px;
+        margin-bottom: 10px;
+        text-align: right;
+      }
+      h1 {
+        color: #fff;
+      }
+    }
+    .chat-box {
+      border-radius: 24px 24px 0px 0px;
+      background-color: #fff;
+      box-shadow: 0px 0px 12px rgba(100, 100, 100, 0.2);
+      flex: 1 1 100%;
+      padding: 30px;
+      .message {
+        display: flex;
+        margin-bottom: 15px;
+        .message-inner {
+          .username {
+            color: #888;
+            font-size: 16px;
+            margin-bottom: 5px;
+            padding-left: 15px;
+            padding-right: 15px;
+          }
+          .content {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f3f3f3;
+            border-radius: 999px;
+            color: #333;
+            font-size: 18px;
+            line-height: 1.2em;
+            text-align: left;
+          }
+        }
+        &.current-user {
+          margin-top: 30px;
+          justify-content: flex-end;
+          text-align: right;
+          .message-inner {
+            max-width: 75%;
+            .content {
+              color: #fff;
+              font-weight: 600;
+              background-color: #ea526f;
+            }
+          }
+        }
+      }
+      .welcome {
+        display: flex;
+        justify-content: center;
+        h3 {
+          color: lightgray;
+        }
+      }
+    }
+    footer {
+      position: sticky;
+      bottom: 0px;
+      background-color: #fff;
+      padding: 30px;
+      box-shadow: 0px 0px 12px rgba(100, 100, 100, 0.2);
+      form {
+        display: flex;
+        input[type="text"] {
+          flex: 1 1 100%;
+          appearance: none;
+          border: none;
+          outline: none;
+          background: none;
+          display: block;
+          width: 100%;
+          padding: 10px 15px;
+          border-radius: 8px 0px 0px 8px;
+          color: #333;
+          font-size: 18px;
+          box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+          background-color: #f3f3f3;
+          transition: 0.4s;
+          &::placeholder {
+            color: #888;
+            transition: 0.4s;
+          }
+        }
+        input[type="submit"] {
+          appearance: none;
+          border: none;
+          outline: none;
+          background: none;
+          display: block;
+          padding: 10px 15px;
+          border-radius: 0px 8px 8px 0px;
+          background-color: #ea526f;
+          color: #fff;
+          font-size: 18px;
+          font-weight: 700;
+        }
+      }
+    }
+  }
 }
 </style>

@@ -70,9 +70,8 @@ export default {
 @media (min-width: 768px) {
   .flex-container {
     display: flex;
-    overflow-y: scroll;
+    overflow-x: auto;
     justify-content: space-between;
-    max-width: 720px;
   }
 }
 .flex-child {

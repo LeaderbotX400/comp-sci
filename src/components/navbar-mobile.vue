@@ -1,7 +1,7 @@
 <template>
   <div class="topnav">
     <div class="grid">
-      <a class="icon" @click="showMenu()">
+      <a class="icon" @click="showMenu(), reload()">
         <i class="icon fa fa-bars" />
       </a>
       <router-link to="/" @click="reload()">
@@ -27,7 +27,7 @@
     </div>
     <div id="links">
       <div id="games">
-        <div v-if="show.games.active">
+        <div v-if="show.games">
           <router-link to="/games/dragon" @click="reload()">
             RNG Dragon
           </router-link>
@@ -35,17 +35,16 @@
         </div>
       </div>
       <div id="apis">
-        <div v-if="show.apis.active">
+        <div v-if="show.apis">
           <router-link to="/fetch/weather" @click="reload()"
-            >weather</router-link
+            >Weather</router-link
           >
           <router-link to="/fetch/pokedex" @click="reload()"
-            >pokedex</router-link
+            >Pokedex</router-link
           >
         </div>
       </div>
-
-      <div id="firebase" v-if="show.firebase.active">
+      <div id="firebase" v-if="show.firebase">
         <router-link to="/firebase/todo" @click="reload()"
           >To-Do App</router-link
         >
@@ -67,15 +66,9 @@ export default {
   data() {
     return {
       show: {
-        games: {
-          active: false,
-        },
-        apis: {
-          active: false,
-        },
-        firebase: {
-          active: false,
-        },
+        games: false,
+        apis: false,
+        firebase: false,
       },
       showLinks: false,
       showAuth: false,
@@ -87,13 +80,13 @@ export default {
     changeFocus(item) {
       let temp = this.show;
       for (let i in temp) {
-        temp[i].active = false;
+        temp[i] = false;
       }
-      this.show[item].active = true;
+      this.show[item] = true;
     },
     reload() {
       for (let i in this.show) {
-        this.show[i].active = false;
+        this.show[i] = false;
       }
     },
     showMenu() {
