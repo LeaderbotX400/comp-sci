@@ -9,7 +9,6 @@
   "dependencies": {
     "firebase": "^9.6.11",
     "firebaseui": "^6.0.1",
-    "materialize-css": "^1.0.0-rc.2",
     "postcss": "^8.4.13",
     "sas": "^3.0.4",
     "sass": "^1.51.0",
