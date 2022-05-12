@@ -1,10 +1,8 @@
 <template>
-  <!-- The navigation menu -->
   <div class="navbar">
-    <div class="btn-grid">
+    <div class="button-grid">
       <router-link to="/"><i class="fas fa-home"></i> Home</router-link>
-      <!-- Games -->
-      <div class="subnav">
+      <div id="games" class="subnav">
         <button class="subnavbtn">
           <i class="fas fa-gamepad"></i> Games <i class="fa fa-caret-down"></i>
         </button>
@@ -13,8 +11,7 @@
           <router-link to="/games/dragon">RNG Dragon</router-link>
         </div>
       </div>
-      <!-- API based applications -->
-      <div class="subnav">
+      <div id="apis" class="subnav">
         <button class="subnavbtn">
           <i class="fas fa-terminal"></i> Api(s)
           <i class="fa fa-caret-down"></i>
@@ -22,34 +19,70 @@
         <div class="subnav-content">
           <router-link to="/fetch/pokedex">Pokedex</router-link>
           <router-link to="/fetch/weather">Weather</router-link>
-          <router-link to="/misc/todo">To-Do app</router-link>
+          <router-link to="/firebase/todo">To-Do app</router-link>
+        </div>
+      </div>
+      <div id="firebase" class="subnav">
+        <button class="subnavbtn">
+          <i class="fa fa-fire" aria-hidden="true" /> Firebase
+          <i class="fa fa-caret-down" />
+        </button>
+        <div class="subnav-content">
+          <router-link to="/firebase/todo">To-Do app</router-link>
+          <router-link to="/firebase/chat">Chat app</router-link>
         </div>
       </div>
     </div>
-    <!-- Auth button -->
     <div class="auth">
-      <button class="login btn" @click="showAuthMenu" v-if="!loggedIn">
+      <button class="login button" @click="showAuthMenu" v-if="!loggedIn">
         Login
       </button>
-      <button class="logout btn" @click="logout" v-if="loggedIn">Logout</button>
+      <button class="logout button" @click="logout" v-else>Logout</button>
     </div>
   </div>
 </template>
 
 <script>
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { EmailAuthProvider, GoogleAuthProvider } from "@firebase/auth";
 import "firebaseui";
-import { setDoc } from "@firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc } from "@firebase/firestore";
 
 export default {
   data() {
     return {
       showAuth: false,
       loggedIn: false,
+      info: null,
     };
   },
   methods: {
+    async init(user) {
+      const docRef = doc(db, `users/${user.uid}`);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        if (docSnap.data().info) {
+          this.info = docSnap.data().info;
+        } else {
+          await updateDoc(docRef, {
+            info: {
+              uid: user.uid,
+              name: user.displayName,
+              email: [user.email],
+            },
+          });
+        }
+      } else {
+        await setDoc(docRef, {
+          info: {
+            uid: user.uid,
+            name: user.displayName,
+            email: user.email,
+          },
+        });
+      }
+    },
     showAuthMenu() {
       let ui = firebaseui.auth.AuthUI.getInstance();
       if (!ui) {
@@ -58,7 +91,6 @@ export default {
       const uiConfig = {
         callbacks: {
           signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-            // Handle the result
             return false;
           },
         },
@@ -66,6 +98,7 @@ export default {
         signInOptions: [
           {
             provider: EmailAuthProvider.PROVIDER_ID,
+            requireDisplayName: true,
           },
           {
             provider: GoogleAuthProvider.PROVIDER_ID,
@@ -82,10 +115,9 @@ export default {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.loggedIn = true;
-        console.log(user.email + " is logged in!");
+        this.init(user);
       } else {
         this.loggedIn = false;
-        console.log("User is logged out!");
       }
     });
   },
@@ -93,7 +125,7 @@ export default {
 </script>
 
 <style scoped>
-.btn-grid {
+.button-grid {
   display: flex;
   align-items: center;
 }
@@ -102,7 +134,7 @@ export default {
 .auth {
   display: flex;
 }
-.btn {
+.button {
   background-color: #333;
   color: white;
   border: none;
@@ -130,7 +162,7 @@ export default {
 }
 
 /* Navigation links */
-.btn-grid a {
+.button-grid a {
   font-family: Arial;
   float: left;
   font-size: 16px;
@@ -159,7 +191,7 @@ export default {
 }
 
 /* Add a skyblue background color to navigation links on hover */
-.btn-grid a:hover,
+.button-grid a:hover,
 .subnav:hover .subnavbtn {
   background-color: skyblue;
 }
