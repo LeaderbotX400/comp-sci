@@ -38,6 +38,21 @@
     </header>
     <section class="chat-box">
       <h3 v-if="currentRoom.id == null">Please select a room</h3>
+      <button
+        class="btn"
+        @click="showAddUser = true"
+        v-if="!showAddUser && currentRoom.id != null"
+      >
+        Add User
+      </button>
+      <form @submit.prevent="addUser(newUser)" v-if="showAddUser">
+        <input
+          type="text"
+          v-model="newUser"
+          placeholder="Enter user email..."
+        />
+        <input type="submit" value="Add User" />
+      </form>
       <div class="welcome">
         <h3 v-if="currentRoom.id != null">Welcome to {{ currentRoom.name }}</h3>
       </div>
@@ -58,17 +73,6 @@
       <form @submit.prevent="addItem(newItem)">
         <input type="text" v-model="newItem" placeholder="Write a message..." />
         <input type="submit" value="Send" />
-      </form>
-      <button @click="showAddUser = true" v-if="!showAddUser">
-        <i class="fa fa-plus" aria-hidden="true"></i>
-      </button>
-      <form @submit.prevent="addUser(newUser)" v-if="showAddUser">
-        <input
-          type="text"
-          v-model="newUser"
-          placeholder="Enter user email..."
-        />
-        <input type="submit" value="Add User" />
       </form>
     </footer>
   </div>
@@ -399,6 +403,19 @@ export default {
         }
       }
     }
+  }
+  .btn {
+    appearance: none;
+    border: none;
+    outline: none;
+    background: none;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: #ea526f;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
   }
 }
 </style>
