@@ -1,7 +1,7 @@
 class Screen {
   constructor() {
     this.screen;
-    this.screenTarget = document.querySelector('.screen');
+    this.screenTarget = document.querySelector(".screen");
   }
 
   drawBlackScreen() {
@@ -9,24 +9,24 @@ class Screen {
   }
 
   drawFadeOutScreen() {
-    this.screenTarget.insertAdjacentHTML('afterbegin', drawFadeOutScreen);
+    this.screenTarget.insertAdjacentHTML("afterbegin", drawFadeOutScreen);
 
     setTimeout(() => {
-      document.querySelector('.overlay-fade-out').remove();
+      document.querySelector(".overlay-fade-out").remove();
     }, 500);
   }
 
   drawFadeInScreen() {
-    this.screenTarget.insertAdjacentHTML('afterbegin', drawFadeInScreen);
+    this.screenTarget.insertAdjacentHTML("afterbegin", drawFadeInScreen);
 
     setTimeout(() => {
-      document.querySelector('.overlay-fade-in').remove();
+      document.querySelector(".overlay-fade-in").remove();
     }, 1500);
   }
 
   drawIntroScreen() {
     this.screenTarget.innerHTML = introScreen;
-    const audio = new Audio('./sounds/gameboy_start.mp3');
+    const audio = new Audio("./sounds/gameboy_start.mp3");
     audio.volume = 0.2;
     game.sound = audio;
     game.sound.play();
@@ -35,7 +35,7 @@ class Screen {
   drawWelcomeScreen() {
     game.lowHpSound.pause();
     this.screenTarget.innerHTML = welcomeScreen;
-    const audio = new Audio('./sounds/opening.mp3');
+    const audio = new Audio("./sounds/opening.mp3");
     audio.volume = 0.1;
     game.sound = audio;
     game.battleSound.pause();
@@ -43,24 +43,26 @@ class Screen {
 
     const listenToKey = () => {
       game.screen.drawChoosePokemonScreen();
-      window.removeEventListener('click', listenToKey);
+      window.removeEventListener("click", listenToKey);
     };
 
-    window.addEventListener('click', listenToKey);
+    window.addEventListener("click", listenToKey);
   }
 
   drawChoosePokemonScreen() {
     game.lowHpSound.pause();
     this.screenTarget.innerHTML = choosePokemonScreen;
-    document.querySelectorAll('.pokeball-wrapper').forEach((el) => {
-      el.addEventListener('click', (ev) => {
-        const pickedPokemon = ev.target.closest('div').getAttribute('data-pokemon');
-        if (pickedPokemon === 'charmander') {
-          game.playerPokemon = new Charmander('Ash');
-        } else if (pickedPokemon === 'squirtle') {
-          game.playerPokemon = new Squirtle('Ash');
+    document.querySelectorAll(".pokeball-wrapper").forEach((el) => {
+      el.addEventListener("click", (ev) => {
+        const pickedPokemon = ev.target
+          .closest("div")
+          .getAttribute("data-pokemon");
+        if (pickedPokemon === "charmander") {
+          game.playerPokemon = new Charmander("Ash");
+        } else if (pickedPokemon === "squirtle") {
+          game.playerPokemon = new Squirtle("Ash");
         } else {
-          game.playerPokemon = new Bulbasaur('Ash');
+          game.playerPokemon = new Bulbasaur("Ash");
         }
         game.drawChooseDifficultyScreen();
       });
@@ -70,31 +72,39 @@ class Screen {
   drawChooseDifficultyScreen() {
     game.lowHpSound.pause();
     this.screenTarget.innerHTML = chooseDifficultyScreen;
-    document.querySelectorAll('.trainer-wrapper').forEach((el) => {
-      el.addEventListener('click', (ev) => {
-        const difficulty = ev.target.closest('div').getAttribute('data-difficulty');
-        if (difficulty === 'easy') {
-          game.opponentTrainer = 'Mr. X';
+    document.querySelectorAll(".trainer-wrapper").forEach((el) => {
+      el.addEventListener("click", (ev) => {
+        const difficulty = ev.target
+          .closest("div")
+          .getAttribute("data-difficulty");
+        if (difficulty === "easy") {
+          game.opponentTrainer = "Mr. X";
           game.opponentPokemonArr = [
             new Rattata(game.opponentTrainer),
             new Geodude(game.opponentTrainer),
             new Jigglypuff(game.opponentTrainer),
           ];
-          game.playerBag = [{ name: 'Potion', quantity: 3, energy: 50, info: 'Heals 50 hp' }];
-          game.opponentBag = [{ name: 'Potion', quantity: 3, energy: 50 }];
-          document.querySelector('.screen').style.backgroundImage = 'url("./images/arena-forrest.png")';
-        } else if (difficulty === 'medium') {
-          game.opponentTrainer = 'Garry';
+          game.playerBag = [
+            { name: "Potion", quantity: 3, energy: 50, info: "Heals 50 hp" },
+          ];
+          game.opponentBag = [{ name: "Potion", quantity: 3, energy: 50 }];
+          document.querySelector(".screen").style.backgroundImage =
+            'url("./images/arena-forrest.png")';
+        } else if (difficulty === "medium") {
+          game.opponentTrainer = "Garry";
           game.opponentPokemonArr = [
             new Poliwrath(game.opponentTrainer),
             new Gengar(game.opponentTrainer),
             new Gyarados(game.opponentTrainer),
           ];
-          game.playerBag = [{ name: 'Potion', quantity: 4, energy: 50, info: 'Heals 50 hp' }];
-          game.opponentBag = [{ name: 'Potion', quantity: 3, energy: 50 }];
-          document.querySelector('.screen').style.backgroundImage = 'url("./images/arena-street.png")';
+          game.playerBag = [
+            { name: "Potion", quantity: 4, energy: 50, info: "Heals 50 hp" },
+          ];
+          game.opponentBag = [{ name: "Potion", quantity: 3, energy: 50 }];
+          document.querySelector(".screen").style.backgroundImage =
+            'url("./images/arena-street.png")';
         } else {
-          game.opponentTrainer = 'Bonnie';
+          game.opponentTrainer = "Cynthia";
           console.log(game.opponentTrainer);
 
           game.opponentPokemonArr = [
@@ -102,9 +112,12 @@ class Screen {
             new Mewtu(game.opponentTrainer),
             new Glitch(game.opponentTrainer),
           ];
-          game.playerBag = [{ name: 'Potion', quantity: 5, energy: 50, info: 'Heals 50 hp' }];
-          game.opponentBag = [{ name: 'Potion', quantity: 3, energy: 50 }];
-          document.querySelector('.screen').style.backgroundImage = 'url("./images/arena-final.png")';
+          game.playerBag = [
+            { name: "Potion", quantity: 5, energy: 50, info: "Heals 50 hp" },
+          ];
+          game.opponentBag = [{ name: "Potion", quantity: 3, energy: 50 }];
+          document.querySelector(".screen").style.backgroundImage =
+            'url("./images/arena-final.png")';
         }
         game.drawBattleScreen();
       });
@@ -122,12 +135,12 @@ class Screen {
 
   drawNextTrainerScreen() {
     this.screenTarget.innerHTML = nextTrainerScreen
-      .replace('#{opponentTrainer}', game.opponentPokemon.trainer)
-      .replace('#{pokemon}', game.opponentPokemon.name);
+      .replace("#{opponentTrainer}", game.opponentPokemon.trainer)
+      .replace("#{pokemon}", game.opponentPokemon.name);
 
-    document.querySelectorAll('.deciscion--btn').forEach((el) => {
-      el.addEventListener('click', (ev) => {
-        if (ev.target.innerHTML === 'Continue') {
+    document.querySelectorAll(".deciscion--btn").forEach((el) => {
+      el.addEventListener("click", (ev) => {
+        if (ev.target.innerHTML === "Continue") {
           game.drawBattleScreen();
         } else {
           this.drawLostScreen();
@@ -139,7 +152,7 @@ class Screen {
   drawMasterWonScreen() {
     game.lowHpSound.pause();
     this.screenTarget.innerHTML = masterWonScreen;
-    const audio = new Audio('./sounds/win.mp3');
+    const audio = new Audio("./sounds/win.mp3");
     audio.volume = 0.2;
     game.sound = audio;
     game.battleSound.pause();
@@ -149,7 +162,7 @@ class Screen {
   drawWonScreen() {
     game.lowHpSound.pause();
     this.screenTarget.innerHTML = wonScreen;
-    const audio = new Audio('./sounds/win.mp3');
+    const audio = new Audio("./sounds/win.mp3");
     audio.volume = 0.2;
     game.sound = audio;
     game.battleSound.pause();
@@ -238,7 +251,7 @@ const chooseDifficultyScreen = `
         <div class="trainer-wrapper" data-difficulty="hard">
           <p>Hard</p>
           <img style="width:100px;" src="./images/trainer_4.gif">
-          <p>Bonnie</p>
+          <p>Cynthia</p>
         </div>
         </div>
   </div>

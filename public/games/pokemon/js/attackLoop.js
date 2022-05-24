@@ -1,6 +1,8 @@
 const playerAttacks = async (ev) => {
   return new Promise(async (resolve, reject) => {
-    let attack = { ...game.playerPokemon.attacks[ev.target.getAttribute('data-attack-id')] };
+    let attack = {
+      ...game.playerPokemon.attacks[ev.target.getAttribute("data-attack-id")],
+    };
 
     let crit = false;
 
@@ -13,9 +15,9 @@ const playerAttacks = async (ev) => {
     }
 
     if (
-      (attack.type === 'Fire' && game.opponentPokemon.type === 'Grass') ||
-      (attack.type === 'Water' && game.opponentPokemon.type === 'Rock') ||
-      (attack.type === 'Grass' && game.opponentPokemon.type === 'Water')
+      (attack.type === "Fire" && game.opponentPokemon.type === "Grass") ||
+      (attack.type === "Water" && game.opponentPokemon.type === "Rock") ||
+      (attack.type === "Grass" && game.opponentPokemon.type === "Water")
     ) {
       crit = true;
       attack.damage = attack.damage * 1.5;
@@ -39,12 +41,21 @@ const playerAttacks = async (ev) => {
     if (game.opponentPokemon.health <= 0) {
       game.opponentPokemonArr.shift();
 
-      if (game.opponentPokemonArr.length === 0 && game.opponentPokemon.trainer === 'Bonnie') {
+      if (
+        game.opponentPokemonArr.length === 0 &&
+        game.opponentPokemon.trainer === "Cynthia"
+      ) {
         return game.screen.drawMasterWonScreen();
       }
 
-      if (game.opponentPokemonArr.length === 0) return game.screen.drawWonScreen();
-      document.querySelector('.screen').insertAdjacentHTML('afterbegin', "<div class='overlay-fade-in'></div>");
+      if (game.opponentPokemonArr.length === 0)
+        return game.screen.drawWonScreen();
+      document
+        .querySelector(".screen")
+        .insertAdjacentHTML(
+          "afterbegin",
+          "<div class='overlay-fade-in'></div>"
+        );
 
       game.opponentPokemon = game.opponentPokemonArr[0];
       game.drawNextTrainerScreen();
@@ -58,18 +69,28 @@ const playerAttacks = async (ev) => {
 };
 
 const opponentAttacks = async () => {
-  if (game.opponentBag[0].quantity > 0 && game.opponentPokemon.healthPercent < 50) {
+  if (
+    game.opponentBag[0].quantity > 0 &&
+    game.opponentPokemon.healthPercent < 50
+  ) {
     if (Math.ceil(Math.random() * 2) === 2) {
-      await game.opponentPokemon.restoreHealth(game.opponentPokemon, game.opponentBag);
+      await game.opponentPokemon.restoreHealth(
+        game.opponentPokemon,
+        game.opponentBag
+      );
       game.menu.drawDefaultMenu(game.playerPokemon);
       return;
     }
   }
 
-  const randomNum = Math.floor(Math.random() * game.opponentPokemon.attacks.length);
+  const randomNum = Math.floor(
+    Math.random() * game.opponentPokemon.attacks.length
+  );
   let attack = { ...game.opponentPokemon.attacks[randomNum] };
 
-  attack.damage = Math.floor(attack.damage * (game.opponentPokemon.level / 100 + 1));
+  attack.damage = Math.floor(
+    attack.damage * (game.opponentPokemon.level / 100 + 1)
+  );
 
   let crit = false;
 
@@ -95,7 +116,8 @@ const opponentAttacks = async () => {
     );
   }
 
-  if (game.playerPokemon.health > 0) return game.menu.drawDefaultMenu(game.playerPokemon);
+  if (game.playerPokemon.health > 0)
+    return game.menu.drawDefaultMenu(game.playerPokemon);
 
   setTimeout(() => {
     game.screen.drawLostScreen();
