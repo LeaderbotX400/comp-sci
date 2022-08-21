@@ -64,6 +64,9 @@ export default defineComponent({
 </script>
 
 <style>
+main {
+  background-color: lightblue;
+}
 .scale-enter-active,
 .scale-leave-active {
   transition: all 0.5s ease;
