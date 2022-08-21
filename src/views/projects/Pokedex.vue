@@ -6,11 +6,16 @@ main.style.backgroundImage = "";
 </script>
 
 <template>
-  <v-app-bar color="black">
-    <v-toolbar-title> Kanto Pokemon </v-toolbar-title>
-  </v-app-bar>
   <v-container align="center">
-    <v-spacer />
+    <v-row>
+      <v-col>
+        <v-card color="black">
+          <v-card-title>
+            <h1>Kanto Pokemon</h1>
+          </v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
     <v-row v-if="!rendering">
       <v-col>
         <v-btn color="red" @click="fetchKantoPokemon()">
@@ -30,7 +35,7 @@ main.style.backgroundImage = "";
       :total-visible="5"
       class="mt-3"
     />
-    <v-row>
+    <v-row v-if="rendering">
       <v-col v-for="(data, index) in visiblePokemon" :key="index">
         <Pokemon :data="data" />
       </v-col>
