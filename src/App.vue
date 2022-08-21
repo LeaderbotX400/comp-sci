@@ -1,46 +1,57 @@
 <template>
-  <Navbar v-if="!mobile" />
-  <NavbarMobile v-else />
-  <div id="firebaseui-auth-container"></div>
-  <router-view :key="$route.fullPath" />
+  <v-app>
+    <v-app-bar color="black">
+      <v-toolbar-title>Comp-Sci</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-btn
+          v-if="!loggedIn"
+          @click="$router.push('/login')"
+          color="primary"
+          dark
+          text
+        >
+          Login
+        </v-btn>
+        <v-btn v-if="loggedIn" @click="logout" color="primary" dark text>
+          Logout
+        </v-btn>
+      </v-toolbar-items>
+    </v-app-bar>
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
-<script>
-import Navbar from "./components/navbar.vue";
-import NavbarMobile from "./components/navbar-mobile.vue";
-export default {
-  components: { Navbar, NavbarMobile },
+<script lang="ts">
+import { defineComponent } from "vue";
+import { auth } from "./firebase";
+
+export default defineComponent({
+  name: "App",
+
   data() {
     return {
-      mobile: false,
-      width: null,
+      loggedIn: false,
+      user: {},
     };
   },
   methods: {
-    checkIfMobile() {
-      if (this.width < 600) {
-        this.mobile = true;
-      } else {
-        this.mobile = false;
-      }
-    },
-    getScreenWidth() {
-      return (
-        window.innerWidth ||
-        document.documentElement.clientWidth ||
-        document.body.clientWidth
-      );
-    },
-    handleResize() {
-      this.width = this.getScreenWidth();
-      this.checkIfMobile();
+    logout() {
+      auth.signOut();
     },
   },
   mounted() {
-    window.addEventListener("resize", this.handleResize);
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.loggedIn = true;
+        this.user = user;
+      } else {
+        this.loggedIn = false;
+        this.user = {};
+      }
+    });
   },
-  destroyed() {
-    window.removeEventListener("resize", this.handleResize);
-  },
-};
+});
 </script>
