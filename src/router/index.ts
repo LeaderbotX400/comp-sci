@@ -54,13 +54,5 @@ const router = createRouter({
     },
   ],
 });
-router.afterEach((to, from) => {
-  const title = useTitle();
-  const favicon = useFavicon();
-  title.value = to.name as string;
-
-  // @ts-expect-error
-  favicon.value = `//${to.meta.favicon}.ico` as string;
-});
 
 export default router;

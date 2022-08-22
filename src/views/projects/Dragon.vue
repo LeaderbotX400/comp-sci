@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import { useFavicon, useTitle } from "@vueuse/core";
 const main = document.querySelector("main");
 
+useTitle("Computer Science - RNG Dragon");
+useFavicon("https://icon-library.com/images/icon-dragon/icon-dragon-27.jpg");
 // @ts-ignore
-main.style.backgroundImage = "url('/src/assets/images/dragon.jpg')";
+main.style.backgroundImage =
+  "url('https://wallpapercave.com/wp/wp7510952.jpg')";
 </script>
 
 <template>

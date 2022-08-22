@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import { useFavicon, useTitle } from "@vueuse/core";
+
+useTitle("Computer Science - Login");
+useFavicon(
+  "https://cdn.iconscout.com/icon/premium/png-256-thumb/computer-science-1847495-1567216.png"
+);
+
+const main = document.querySelector("main");
+
+// @ts-ignore
+main.style.backgroundImage =
+  "url('https://wallpapercave.com/wp/wp2044697.jpg')";
+</script>
+
 <template>
   <v-container class="d-flex justify-center align-center">
     <v-card color="dark-grey" width="300">

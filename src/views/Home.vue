@@ -1,8 +1,15 @@
 <script setup lang="ts">
+import { useFavicon, useTitle } from "@vueuse/core";
 const main = document.querySelector("main");
 
+useTitle("Computer Science");
+useFavicon(
+  "https://cdn.iconscout.com/icon/premium/png-256-thumb/computer-science-1847495-1567216.png"
+);
+
 // @ts-ignore
-main.style.backgroundImage = "url('/src/assets/images/default.jpg')";
+main.style.backgroundImage =
+  "url('https://wallpapercave.com/wp/wp2044697.jpg')";
 </script>
 
 <template>

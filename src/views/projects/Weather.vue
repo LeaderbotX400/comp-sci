@@ -1,8 +1,14 @@
 <script setup lang="ts">
-const main = document.querySelector("main");
+import { useFavicon, useTitle } from "@vueuse/core";
 
+useTitle("Computer Science - Weather");
+useFavicon(
+  "https://firebasestorage.googleapis.com/v0/b/comp-sci-site.appspot.com/o/public%2Ffavicons%2Fweather.ico?alt=media&token=42f105ee-c627-42a8-bffc-df6c5ea90114"
+);
+const main = document.querySelector("main");
 // @ts-ignore
-main.style.backgroundImage = "url('/src/assets/images/weather.jpg')";
+main.style.backgroundImage =
+  "url('https://wallup.net/wp-content/uploads/2016/07/19/11708-artwork-sky-clouds.jpg')";
 </script>
 
 <template>

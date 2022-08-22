@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { useFavicon, useTitle } from "@vueuse/core";
+
+useTitle("Computer Science - Pokedex");
+useFavicon("https://vectorified.com/images/pokeball-desktop-icon-13.png");
+
 const main = document.querySelector("main");
 
 // @ts-ignore
