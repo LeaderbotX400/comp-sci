@@ -18,10 +18,6 @@ const router = createRouter({
       component: () => import("../views/Home.vue"),
       meta: {
         favicon: "default",
-        background: {
-          type: "image",
-          src: "default",
-        },
       },
     },
     {
@@ -38,10 +34,6 @@ const router = createRouter({
       component: () => import("../views/projects/Dragon.vue"),
       meta: {
         favicon: "dragon",
-        background: {
-          type: "image",
-          src: "default",
-        },
       },
     },
     {
@@ -50,10 +42,14 @@ const router = createRouter({
       component: () => import("../views/projects/Pokedex.vue"),
       meta: {
         favicon: "pokemon",
-        background: {
-          type: "image",
-          src: "default",
-        },
+      },
+    },
+    {
+      path: "/apis/weather",
+      name: "Weather",
+      component: () => import("../views/projects/Weather.vue"),
+      meta: {
+        favicon: "weather",
       },
     },
   ],
