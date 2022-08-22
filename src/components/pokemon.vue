@@ -10,8 +10,8 @@
       <v-chip
         v-for="(type, index) in data.types"
         :key="index"
-        :color="color(type.type.name)"
-        text-color="white"
+        color="black"
+        class="text-capitalize"
       >
         {{ type.type.name }}
       </v-chip>
@@ -68,50 +68,6 @@ export default defineComponent({
     data: {
       type: Object as any,
       required: true,
-    },
-  },
-  methods: {
-    color(type: string) {
-      switch (type) {
-        case "normal":
-          return "grey";
-        case "fighting":
-          return "red";
-        case "flying":
-          return "indigo";
-        case "poison":
-          return "purple";
-        case "ground":
-          return "orange";
-        case "rock":
-          return "brown";
-        case "bug":
-          return "green";
-        case "ghost":
-          return "grey";
-        case "steel":
-          return "blue";
-        case "fire":
-          return "red";
-        case "water":
-          return "blue";
-        case "grass":
-          return "green";
-        case "electric":
-          return "yellow";
-        case "psychic":
-          return "pink";
-        case "ice":
-          return "blue";
-        case "dragon":
-          return "indigo";
-        case "dark":
-          return "grey";
-        case "fairy":
-          return "pink";
-        default:
-          return "grey";
-      }
     },
   },
   mounted() {},

@@ -3,6 +3,8 @@ const main = document.querySelector("main");
 
 // @ts-ignore
 main.style.backgroundImage = "";
+// @ts-ignore
+main.style.backgroundColor = "lightblue";
 </script>
 
 <template>
@@ -34,6 +36,7 @@ main.style.backgroundImage = "";
       :length="Math.ceil(pokemon.length / perPage)"
       :total-visible="5"
       class="mt-3"
+      transition="fade-transition"
     />
     <v-row v-if="rendering">
       <v-col v-for="(data, index) in visiblePokemon" :key="index">
