@@ -7,15 +7,14 @@ main.style.backgroundImage = "url('/src/assets/images/default.jpg')";
 
 <template>
   <v-container align="center">
-    <v-card>
+    <v-card width="800">
       <v-card-title>
         <h2>Hello!</h2>
       </v-card-title>
       <v-card-subtitle>
         <h3>
           Welcome to my small corner of the internet. <br />
-          Use the buttons below to navigate this site, you can also use the
-          Navbar at the top of the screen
+          Use the buttons below to navigate this site
         </h3>
       </v-card-subtitle>
       <v-card-text>
