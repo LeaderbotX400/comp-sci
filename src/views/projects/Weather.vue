@@ -315,7 +315,7 @@ export default defineComponent({
       return new Date(time * 1000).toLocaleString();
     },
   },
-  mounted() {
+  created() {
     this.getWeather();
   },
 });
