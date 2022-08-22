@@ -7,7 +7,7 @@ main.style.backgroundImage = "url('/src/assets/images/default.jpg')";
 
 <template>
   <v-container align="center">
-    <v-card width="800">
+    <v-card max-width="800">
       <v-card-title>
         <h2>Hello!</h2>
       </v-card-title>
@@ -35,8 +35,9 @@ main.style.backgroundImage = "url('/src/assets/images/default.jpg')";
                   >
                     RNG Dragon
                   </v-btn>
-                  <v-btn color="blue-darken-2" class="mb-3">
-                    Pokemon Simulator
+                  <v-btn color="blue-darken-2" class="mb-3" disabled>
+                    Pokemon Simulator (coming
+                    soon<v-icon>mdi-trademark</v-icon>)
                   </v-btn>
                 </v-col>
               </v-row>
