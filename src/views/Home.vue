@@ -1,121 +1,85 @@
-<template>
-  <div class="grid">
-    <div id="container">
-      <h1>Hello There!</h1>
-      <h3>
-        Welcome to my small corner of the internet.<br />Use the buttons below
-        to navigate this site, <br />
-        you can also use the Navbar at the top of the screen
-      </h3>
-      <div class="grid">
-        <div class="flex-container">
-          <div id="games" class="flex-child">
-            <h3>Games</h3>
-            <div id="btn-grid">
-              <router-link to="/games/dragon">
-                <button>RNG Dragon</button>
-              </router-link>
-              <a href="/games/pokemon/index.html"
-                ><button>Pokemon Simulator</button></a
-              >
-            </div>
-          </div>
-          <div id="firebase" class="flex-child">
-            <h3>Firebase</h3>
-            <div id="btn-grid">
-              <router-link to="/firebase/todo">
-                <button>To-Do App</button>
-              </router-link>
-              <router-link to="/firebase/chat">
-                <button>Chat App</button>
-              </router-link>
-            </div>
-          </div>
-          <div id="apis" class="flex-child">
-            <h3>API based applications</h3>
-            <div id="btn-grid">
-              <router-link to="/fetch/pokedex">
-                <button>Pokedex</button>
-              </router-link>
-              <router-link to="/fetch/weather">
-                <button>Weather</button>
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+<script setup lang="ts">
+const main = document.querySelector("main");
 
-<script>
-export default {
-  beforeCreate: function () {
-    document.body.className = "home";
-  },
-  mounted() {
-    let link = document.querySelector("link[rel~='icon']");
-    link.href = "/favicons/favicon.ico";
-    document.title = "Computer Science";
-  },
-};
+// @ts-ignore
+main.style.backgroundImage = "url('/src/assets/images/default.jpg')";
 </script>
 
-<style scoped>
-.grid {
-  display: grid;
-  place-items: center;
-  margin-top: 20px;
-}
-@media (min-width: 768px) {
-  .flex-container {
-    display: flex;
-    overflow-x: auto;
-    justify-content: space-between;
-  }
-}
-.flex-child {
-  flex: 1;
-  border: 2px;
-}
+<template>
+  <v-container align="center">
+    <v-card max-width="800">
+      <v-card-title>
+        <h2>Hello!</h2>
+      </v-card-title>
+      <v-card-subtitle>
+        <h3>
+          Welcome to my small corner of the internet. <br />
+          Use the buttons below to navigate this site
+        </h3>
+      </v-card-subtitle>
+      <v-card-text>
+        <v-row>
+          <v-col>
+            <v-container>
+              <v-row>
+                <v-col>
+                  <h2>Games</h2>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col class="d-flex flex-column">
+                  <v-btn
+                    color="blue-darken-2"
+                    class="mb-3"
+                    @click="$router.push({ name: 'Dragon' })"
+                  >
+                    RNG Dragon
+                  </v-btn>
+                  <v-btn color="blue-darken-2" class="mb-3" disabled>
+                    Pokemon Simulator (coming
+                    soon<v-icon>mdi-trademark</v-icon>)
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-col>
+          <v-col>
+            <v-container>
+              <v-row>
+                <v-col>
+                  <h2>API powered applications</h2>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col class="d-flex flex-column">
+                  <v-btn
+                    color="blue-darken-2"
+                    class="mb-3"
+                    @click="$router.push({ name: 'Pokedex' })"
+                  >
+                    Pokedex
+                  </v-btn>
+                  <v-btn
+                    color="blue-darken-2"
+                    class="mb-3"
+                    @click="$router.push({ name: 'Weather' })"
+                  >
+                    Weather
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-container>
+</template>
 
-#container {
-  max-width: fit-content;
-  box-shadow: 2px 2px 5px 2px rgb(175, 176, 202);
-  background-color: white;
-  border-radius: 10px;
-}
-#btn-grid {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  margin: 8px;
-  padding: 4px;
-}
+<script lang="ts">
+import { defineComponent } from "vue";
 
-button {
-  background-color: #3399ff;
-  color: white;
-  border: none;
-  padding: 15px 35px;
-  border-radius: 5px;
-  margin: 10px;
-  font-size: 14px;
-  width: 200px;
-  outline: none;
-  box-shadow: 2px 2px 5px 2px rgb(201, 202, 230);
-}
-
-button.center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-}
-
-button:hover {
-  -moz-box-shadow: inset 0 0 100px 100px skyblue;
-  -webkit-box-shadow: inset 0 0 100px 100px skyblue;
-  box-shadow: inset 0 0 100px 100px skyblue;
-}
-</style>
+export default defineComponent({
+  name: "Home",
+});
+</script>
