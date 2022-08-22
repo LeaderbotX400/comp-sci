@@ -17,7 +17,7 @@ const router = createRouter({
       name: "Home",
       component: () => import("../views/Home.vue"),
       meta: {
-        favicon: "default",
+        favicon: "comp-sci",
       },
     },
     {
@@ -25,7 +25,7 @@ const router = createRouter({
       name: "Login",
       component: () => import("../views/Login.vue"),
       meta: {
-        favicon: "default",
+        favicon: "comp-sci",
       },
     },
     {
@@ -60,7 +60,7 @@ router.afterEach((to, from) => {
   title.value = to.name as string;
 
   // @ts-expect-error
-  favicon.value = `/favicons/${to.meta.favicon}.ico` as string;
+  favicon.value = `//${to.meta.favicon}.ico` as string;
 });
 
 export default router;
