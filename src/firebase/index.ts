@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
 import { getFunctions } from "firebase/functions";
 import { getAnalytics } from "firebase/analytics";
 import { getPerformance } from "firebase/performance";
@@ -21,12 +20,11 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const functions = getFunctions(app);
-const storage = getStorage(app);
-getAnalytics(app);
-getPerformance(app);
+const analytics = getAnalytics(app);
+const performance = getPerformance(app);
 const appCheck = initializeAppCheck(app, {
   provider: new ReCaptchaV3Provider("6LeXN_YfAAAAAGkxdp2FlIHIsrMsJ-C8URAfunJE"),
   isTokenAutoRefreshEnabled: true,
 });
 
-export { auth, db, storage, functions, appCheck };
+export { auth, db, functions, appCheck };

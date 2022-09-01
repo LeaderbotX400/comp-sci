@@ -16,41 +16,26 @@ const router = createRouter({
       path: "/",
       name: "Home",
       component: () => import("../views/Home.vue"),
-      meta: {
-        favicon: "comp-sci",
-      },
     },
     {
       path: "/login",
       name: "Login",
       component: () => import("../views/Login.vue"),
-      meta: {
-        favicon: "comp-sci",
-      },
     },
     {
       path: "/games/dragon",
       name: "Dragon",
       component: () => import("../views/projects/Dragon.vue"),
-      meta: {
-        favicon: "dragon",
-      },
     },
     {
       path: "/apis/pokedex",
       name: "Pokedex",
       component: () => import("../views/projects/Pokedex.vue"),
-      meta: {
-        favicon: "pokemon",
-      },
     },
     {
       path: "/apis/weather",
       name: "Weather",
       component: () => import("../views/projects/Weather.vue"),
-      meta: {
-        favicon: "weather",
-      },
     },
   ],
 });
